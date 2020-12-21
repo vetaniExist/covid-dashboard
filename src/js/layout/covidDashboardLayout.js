@@ -1,4 +1,6 @@
-import createEl from "../utils/elementsUtils";
+import { createElement as createEl } from "../utils/elementsUtils";
+import { CovidData as CData } from "../entries/covidData";
+
 import { DashboardTable as Table } from "./table";
 import { CountryList as DashboarList } from "./countryListLayout";
 import { MapLayout as DashboardMap } from "./mapLayout";
@@ -11,14 +13,14 @@ export class CovidDashboardLayout {
     this.countryList = new DashboarList();
     this.map = new DashboardMap();
     this.graph = new Graph();
+    this.data = new CData();
 
     this.configurateBody();
     this.configurateFooter();
   }
 
   configurateFooter() {
-    this.footer = createEl("footer");
-    this.body.appendChild(this.footer);
+    this.footer = createEl("footer", "", this.body);
   }
 
   configurateBody() {

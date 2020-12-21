@@ -1,6 +1,6 @@
 export class DashboardGraph {
   constructor() {
-
+    console.log("Dashboard Graph not impl");
   }
 }
 
