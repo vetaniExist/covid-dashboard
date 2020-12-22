@@ -1,3 +1,88 @@
+body {
+  width: 100vw;
+  height: 100vh;
+}
+
+.wrapper {
+  position: relative;
+  width: 100vw;
+  height: 90vh;
+  background-color: red;
+}
+
 .flex {
   display: flex;
+}
+
+.flex_wrap {
+  flex-wrap: wrap;
+}
+
+.covid_main-box {
+  position: relative;
+  height: 80vh;
+  width: 100vw;
+  background-color: yellow;
+}
+
+.country_cases-box {
+  position: relative;
+  height: 80vh;
+  width: 20vw;
+  background-color: yellowgreen;
+}
+
+.covid_map {
+  position: relative;
+  height: 80vh;
+  width: 50vw;
+}
+
+.table_graph-box {
+  position: relative;
+  height: 80vh;
+  width: 30vw;
+  background-color: firebrick;
+}
+
+.covid_header {
+  position: relative;
+  height: 10vh;
+  width: 100vw;
+  background-color: purple;
+}
+
+.covid_table {
+  position: relative;
+  width: 30vw;
+  height: 45vh;
+  background-color: green;
+}
+
+.covid_graph {
+  position: relative;
+  width: 30vw;
+  height: 35vh;
+  background-color: tan;
+}
+
+.covid_global-cases {
+  position: relative;
+  height: 30vh;
+  width: 20vw;
+  background-color: cadetblue;
+}
+
+.covid_country_list {
+  position: relative;
+  height: 60vh;
+  width: 20vw;
+  background-color: violet;
+}
+
+footer {
+  position: relative;
+  height: 10vh;
+  width: 100vw;
+  background-color: forestgreen;
 }

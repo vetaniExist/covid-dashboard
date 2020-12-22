@@ -6,7 +6,7 @@ export function createElement(elName, classes = "", parent = null) {
       parent.appendChild(result);
     }
     if (classes) {
-      result.classList.add(classes.trim());
+      result.setAttribute("class", classes.trim());
     }
 
     return result;

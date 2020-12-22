@@ -1,6 +1,9 @@
+import { createElement as createEl } from "../utils/elementsUtils";
+
 export class DashboardGraph {
-  constructor() {
+  constructor(parentNode) {
     console.log("Dashboard Graph not impl");
+    this.graph = createEl("div", "covid_graph", parentNode);
   }
 }
 
