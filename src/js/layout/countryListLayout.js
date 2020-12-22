@@ -6,12 +6,16 @@ export class CountryList {
     this.countryList = createEl("div", "flex flex_wrap covid_country_list", parentNode);
   }
 
-  async constructListOfButtons(data) {
+  async constructListOfButtons(data, textField = null) {
     const listOfCountries = await data.getAllCountries();
+    console.log(listOfCountries);
     listOfCountries.forEach((el) => {
-      const countryButton = createButton(el.name, "country_button", this.countryList);
+      const countryButton = createButton(el.totalConfirmed + " " + el.name, "country_button", this.countryList);
       countryButton.addEventListener("click", () => {
         console.log(el.name);
+        if (textField) {
+          textField.textContent = el.getTotalCases();
+        }
       });
     });
   }

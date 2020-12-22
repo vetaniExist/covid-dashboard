@@ -25,10 +25,10 @@ export class CovidDashboardLayout {
     this.table = new Table(this.tableAndGraphBox);
     this.graph = new Graph(this.tableAndGraphBox);
 
-    this.globalCases = new GCases(this.countryCasesBox);
+    this.globalCases = new GCases(this.countryCasesBox, this.data);
     this.countryList = new DashboarList(this.countryCasesBox);
 
-    this.countryList.constructListOfButtons(this.data); 
+    this.countryList.constructListOfButtons(this.data, this.globalCases.getTextCasesField());
 
     this.configurateBody();
     this.configurateFooter();
