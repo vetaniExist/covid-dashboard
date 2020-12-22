@@ -18,7 +18,6 @@ export function createElement(elName, classes = "", parent = null) {
 
 export function configurateButton(newInnnerText, classes = "", parent = null) {
   const newButton = createElement("button", "basic_button ".concat(classes), parent);
-  // newButton.classList.add("basic_button");
   newButton.innerText = newInnnerText;
   return newButton;
 }

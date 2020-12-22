@@ -2,16 +2,30 @@ import { Country } from "./country";
 
 import { getCountries } from "../utils/covidAPIUtils";
 
+let covidDataInstance = null;
+
 export class CovidData {
   constructor() {
-    this.getAllCountries();
+    if (!covidDataInstance) {
+      covidDataInstance = this;
+      this.getAllCountries();
+    }
+    return covidDataInstance;
   }
 
   getAllCountries() {
-    getCountries().then((data) => {
-      this.countries = data.map((el) => new Country(el));
+    if (this.countries) {
+      console.log("Возвращаем");
+      return this.countries;
+    }
+    return getCountries().then((data) => {
+      this.fullData = data;
+      console.log(data);
+      this.countries = data.Countries.map((el) => new Country(el));
       console.log(this.countries[0]);
+      return this.countries;
     });
+
   }
 }
 

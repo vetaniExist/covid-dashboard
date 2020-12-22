@@ -68,7 +68,7 @@ body {
 
 .covid_global-cases {
   position: relative;
-  height: 30vh;
+  height: 20vh;
   width: 20vw;
   background-color: cadetblue;
 }
@@ -78,6 +78,9 @@ body {
   height: 60vh;
   width: 20vw;
   background-color: violet;
+
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
 
 footer {
@@ -95,7 +98,6 @@ footer {
 
 .logoLink {
   position: relative;
-
 }
 
 .logoImage {
@@ -106,4 +108,14 @@ footer {
 .text {
   color: wheat;
   font-size: 22px;
+}
+
+.country_button {
+  width: 20vw;
+  height: 35px;
+  font-size: 14px;
+  font-family: 'Quicksand', sans-serif;
+  background: rgba(0, 0, 0, 0);
+  color: black;
+  border: 2px solid black;
 }

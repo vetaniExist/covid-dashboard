@@ -1,6 +1,6 @@
 export async function getCountries() {
   try {
-    const response = await fetch("https://api.covid19api.com/countries", {
+    const response = await fetch("https://api.covid19api.com/summary", {
       method: "GET",
       mode: "cors",
     });

@@ -12,6 +12,8 @@ import logoRSS from "../../assets/images/rs_school_js.svg";
 
 export class CovidDashboardLayout {
   constructor() {
+    this.data = new CData();
+
     this.body = document.body;
     this.wrap = createEl("div", "flex flex_wrap wrapper", this.body);
     this.dHeader = new DHeader(this.wrap);
@@ -26,7 +28,7 @@ export class CovidDashboardLayout {
     this.globalCases = new GCases(this.countryCasesBox);
     this.countryList = new DashboarList(this.countryCasesBox);
 
-    this.data = new CData();
+    this.countryList.constructListOfButtons(this.data); 
 
     this.configurateBody();
     this.configurateFooter();
