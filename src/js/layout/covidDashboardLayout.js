@@ -8,6 +8,8 @@ import { DashboardMap as DMap } from "./DashboardMap";
 import { DashboardGraph as Graph } from "./dashboardGraph";
 import { GlobalCases as GCases } from "./globalCases";
 
+import logoRSS from "../../assets/images/rs_school_js.svg";
+
 export class CovidDashboardLayout {
   constructor() {
     this.body = document.body;
@@ -31,7 +33,21 @@ export class CovidDashboardLayout {
   }
 
   configurateFooter() {
-    this.footer = createEl("footer", "", this.body);
+    this.footer = createEl("footer", "flex", this.body);
+
+    const authorLink = createEl("a", "link text", this.footer);
+    authorLink.setAttribute("href", "https://github.com/vetaniExist");
+    authorLink.text = "author";
+
+    const yearOfCreation = createEl("span", "text", this.footer);
+    yearOfCreation.textContent = "2020";
+
+    const logoLink = createEl("a", "flex link logoLink", this.footer);
+    logoLink.setAttribute("href", "https://rs.school/js/");
+
+    const logo = createEl("img", "logoImage", logoLink);
+    logo.src = logoRSS;
+
   }
 
   configurateBody() {

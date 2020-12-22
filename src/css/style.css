@@ -85,4 +85,25 @@ footer {
   height: 10vh;
   width: 100vw;
   background-color: forestgreen;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.link {
+  text-decoration: none;
+}
+
+.logoLink {
+  position: relative;
+
+}
+
+.logoImage {
+  height: 5vh;
+  width: 13vw;
+}
+
+.text {
+  color: wheat;
+  font-size: 22px;
 }
