@@ -8,13 +8,13 @@ export class CovidData {
   constructor() {
     if (!covidDataInstance) {
       covidDataInstance = this;
-      this.parseData();
     }
     return covidDataInstance;
   }
 
   async parseData() {
     await getCountries().then((data) => {
+      console.log("заполняем данные");
       this.worldData = data.Global;
       this.worldCountry = createWorldCountry(this.worldData);
       console.log(this.worldData);
@@ -28,6 +28,7 @@ export class CovidData {
       console.log("Возвращаем");
       return this.countries;
     }
+    console.log("Ждем выполнение getAllCountries");
     await this.parseData();
     return this.countries;
   }
@@ -37,6 +38,7 @@ export class CovidData {
       console.log("Возвращаем worldCountry");
       return this.worldCountry;
     }
+    console.log("Ждем выполнение getCountryWorld");
     await this.parseData();
     return this.worldCountry;
   }
@@ -47,18 +49,20 @@ export class CovidData {
       console.log("Возвращаем");
       return this.worldData.TotalConfirmed;
     }
+    console.log("Ждем выполнение getWorldTotalCases");
     await this.parseData();
     return this.worldData.TotalConfirmed;
   }
 
-  async getWorldTotalCases() {
-    if (this.world) {
+/*   async getWorld() {
+    if (this.worldCountry) {
       console.log("Возвращаем world");
-      return this.world;
+      return this.worldCountry;
     }
+    console.log("Ждем выполнение getWorld");
     await this.parseData();
-    return this.worldData.TotalConfirmed;
-  }
+    return this.worldCountry;
+  } */
 }
 
 export default CovidData;

@@ -12,7 +12,12 @@ import logoRSS from "../../assets/images/rs_school_js.svg";
 
 export class CovidDashboardLayout {
   constructor() {
+    this.configurateLayout();
+  }
+
+  async configurateLayout() {
     this.data = new CData();
+    await this.data.parseData();
 
     this.body = document.body;
     this.wrap = createEl("div", "flex flex_wrap wrapper", this.body);
