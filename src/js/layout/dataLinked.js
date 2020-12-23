@@ -20,12 +20,7 @@ export class DataLinked {
     this.listOfCountries.push(worldCountry);
 
     this.tableDataButton = createEl("div");
-    this.updateTableDataButton("World: cases: "
-      .concat(worldTotalCases)
-      .concat("\n\nrecovered ")
-      .concat(worldCountry.totalRecovered)
-      .concat("\ndeath ")
-      .concat(worldCountry.totalDeath));
+    this.updateTableDataButton(worldCountry, this.currenMode[0]);
 
     let sortConfig;
     this.listOfCountries.sort((elA, elB) => {
@@ -44,15 +39,11 @@ export class DataLinked {
       this.divListOfCountries.appendChild(countryButton);
 
       countryButton.addEventListener("click", () => {
-        console.log(el.name);
-        this.setGlobalCasesTitle(el.name.concat(" ").concat(sortConfig[1]));
-        this.setTextCases(el.getTotalCases());
-        this.updateTableDataButton(el.name.concat(" cases: ")
-          .concat(el.totalConfirmed)
-          .concat("\n\nrecovered ")
-          .concat(el.totalRecovered)
-          .concat("\ndeath ")
-          .concat(el.totalDeath));
+        this.countryButtonClick(el, sortConfig, this.currenMode[0]);
+        /*         console.log(el.name);
+                this.setGlobalCasesTitle(el.name.concat(" ").concat(sortConfig[1]));
+                this.setTextCases(el.getTotalCases());
+                this.updateTableDataButton(el, this.currenMode[0]); */
       });
     });
 
@@ -78,17 +69,57 @@ export class DataLinked {
     return this.tableDataButton;
   }
 
-  updateTableDataButton(newText) {
-    this.tableDataButton.textContent = newText;
+  getNameFromTable() {
+    return this.tableDataButton.textContent.split('')[0];
+  }
+
+  getCountryByName(name) {
+    for (let i = 0; i < this.listOfCountries.length; i += 1) {
+      const curCountry = this.listOfCountries[i];
+      if (curCountry.name.indexOf(name) > -1) {
+        return curCountry;
+      }
+    }
+    return null;
+  }
+
+  updateTableDataButton(el = null, mode) {
+    if (!el) {
+      const curCountry = this.getCountryByName(this.getNameFromTable());
+      if (curCountry) {
+        return this.updateTableDataButton(curCountry, mode);
+      }
+      return null;
+    }
+    const tableData = this.dataTypesArrayTotal.indexOf(mode) > -1 ? {
+      confirmed: "totalConfirmed",
+      recovered: "totalRecovered",
+      death: "totalDeath",
+    }
+      : {
+        confirmed: "todayConfirmed",
+        recovered: "todayRecovered",
+        death: "todayDeath",
+      };
+
+    this.tableDataButton.textContent = el.name.concat(" cases: ")
+      .concat(el[tableData.confirmed])
+      .concat("\n\nrecovered ")
+      .concat(el[tableData.recovered])
+      .concat("\ndeath ")
+      .concat(el[tableData.death]);
+  }
+
+  countryButtonClick(el, sortConfig, mode) {
+    console.log(el.name);
+    this.setGlobalCasesTitle(el.name.concat(" ").concat(sortConfig[1]));
+    this.setTextCases(el.getTotalCases());
+    this.updateTableDataButton(el, mode);
   }
 
   getDivListOfButtons() {
     return this.divListOfCountries;
   }
-
-  /*   getListOfButtons() {
-      return this.countryListButtons;
-    } */
 
   getGlobalCasesTitle() {
     return this.globalCasesTitle;
@@ -150,15 +181,7 @@ export class DataLinked {
 
       this.countryListButtons.push(countryButton);
       countryButton.addEventListener("click", () => {
-        console.log(el.name);
-        this.setGlobalCasesTitle(el.name.concat(" ").concat(sortConfig[1]));
-        this.setTextCases(el.getTotalCases());
-        this.updateTableDataButton(el.name.concat(" cases: ")
-          .concat(el.totalConfirmed)
-          .concat("\n\nrecovered ")
-          .concat(el.totalRecovered)
-          .concat("\ndeath ")
-          .concat(el.totalDeath));
+        this.countryButtonClick(el, sortConfig, mode);
       });
     });
   }
@@ -198,6 +221,7 @@ export class DataLinked {
         this.currenMode = this.dataTypesArrayTotal;
         this.setcontrolPanelDataText(this.currenMode[curModeIndex]);
         this.updateCountryListButtons(this.currenMode[curModeIndex]);
+        this.updateTableDataButton(null, this.currenMode[curModeIndex]);
       }
     });
   }
@@ -210,6 +234,7 @@ export class DataLinked {
         this.currenMode = this.dataTypesArrayToday;
         this.setcontrolPanelDataText(this.currenMode[curModeIndex]);
         this.updateCountryListButtons(this.currenMode[curModeIndex]);
+        this.updateTableDataButton(null, this.currenMode[curModeIndex]);
       }
     });
   }
