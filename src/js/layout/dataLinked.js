@@ -32,7 +32,7 @@ export class DataLinked {
       return sortConfig[0];
     });
 
-    this.divListOfCountries = createEl("div", "flex flex_wrap");
+    this.divListOfCountries = createEl("div", "countries_button_container");
     // this.updateCountryListButtons(this.currenMode[0]);
     this.listOfCountries.forEach((el) => {
       const countryButton = configurateButton(el.name.concat(" ")
@@ -211,10 +211,12 @@ export class DataLinked {
         this.setcontrolPanelDataText(this.currenMode[newModeIndex]);
         this.updateCountryListButtons(this.currenMode[newModeIndex]);
         this.updateTableDataButton(null, this.currenMode[newModeIndex]);
+        this.filterButtonsUsingCountryName(this.filter);
       } else {
         this.setcontrolPanelDataText(this.currenMode[curModeIndex - 1]);
         this.updateCountryListButtons(this.currenMode[curModeIndex - 1]);
         this.updateTableDataButton(null, this.currenMode[curModeIndex - 1]);
+        this.filterButtonsUsingCountryName(this.filter);
       }
     });
   }
@@ -226,10 +228,12 @@ export class DataLinked {
         this.setcontrolPanelDataText(this.currenMode[0]);
         this.updateCountryListButtons(this.currenMode[0]);
         this.updateTableDataButton(null, this.currenMode[0]);
+        this.filterButtonsUsingCountryName(this.filter);
       } else {
         this.setcontrolPanelDataText(this.currenMode[curModeIndex + 1]);
         this.updateCountryListButtons(this.currenMode[curModeIndex + 1]);
         this.updateTableDataButton(null, this.currenMode[curModeIndex + 1]);
+        this.filterButtonsUsingCountryName(this.filter);
       }
     });
   }
@@ -243,6 +247,7 @@ export class DataLinked {
         this.setcontrolPanelDataText(this.currenMode[curModeIndex]);
         this.updateCountryListButtons(this.currenMode[curModeIndex]);
         this.updateTableDataButton(null, this.currenMode[curModeIndex]);
+        this.filterButtonsUsingCountryName(this.filter);
       }
     });
   }
@@ -256,6 +261,31 @@ export class DataLinked {
         this.setcontrolPanelDataText(this.currenMode[curModeIndex]);
         this.updateCountryListButtons(this.currenMode[curModeIndex]);
         this.updateTableDataButton(null, this.currenMode[curModeIndex]);
+        this.filterButtonsUsingCountryName(this.filter);
+      }
+    });
+  }
+
+  filterButtonsUsingCountryName(name = "") {
+    this.filter = name;
+    const filteredCountrieNames = this.listOfCountries.filter((el) => {
+      const curSubString = el.name.substring(0, name.length);
+      return name === curSubString;
+    });
+    console.log("Отфильтровали страны");
+    console.log(filteredCountrieNames);
+
+    const filteredButtons = this.countryListButtons.filter((el) => {
+      return filteredCountrieNames.filter((el2) => el.textContent.indexOf(el2.name) > -1).length > 0;
+    });
+
+    console.log("Отфильтровали кнопки");
+    console.log(filteredButtons);
+    this.countryListButtons.forEach((el) => {
+      if (!filteredButtons.includes(el)) {
+        el.classList.add("display-none")
+      } else {
+        el.classList.remove("display-none");
       }
     });
   }

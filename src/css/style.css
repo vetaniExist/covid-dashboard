@@ -156,3 +156,18 @@ footer {
 .rArrow::after {
   content: url(../assets/images/right_arrow.svg);
 }
+
+.display-none {
+  display: none;
+}
+
+.countries_button_container{
+  height: 58vh;
+  align-items: flex-start;
+  margin-top: 0;
+}
+
+.input_search-field {
+  width: inherit;
+  height: 2vh;
+}
