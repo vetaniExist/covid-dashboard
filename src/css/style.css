@@ -127,11 +127,10 @@ footer {
   width: inherit;
   background-color: red;
   height: 5vh;
-
   justify-content: space-between;
 }
 
-.covid_table-control_panel-data{
+.covid_table-control_panel-data {
   width: 15vw;
   background-color: purple;
   height: inherit;
@@ -147,6 +146,7 @@ footer {
   align-items: center;
   justify-content: center;
 }
+
 .lArrow::after {
   content: url(../assets/images/left_arrow.svg);
 }
@@ -161,7 +161,7 @@ footer {
   display: none;
 }
 
-.countries_button_container{
+.countries_button_container {
   height: 58vh;
   align-items: flex-start;
   margin-top: 0;
@@ -172,7 +172,11 @@ footer {
   height: 2vh;
 }
 
-.flag_img{
+.flag_img {
   width: 50px!important;
   height: 30px;
+}
+
+#mapid {
+  height: inherit;
 }
