@@ -20,8 +20,12 @@ export class DataLinked {
     this.listOfCountries.push(worldCountry);
 
     this.tableDataButton = createEl("div");
-    this.updateTableDataButton("World: cases: ".concat(worldTotalCases).concat("\n\nrecovered ").concat(worldCountry.totalRecovered)
-      .concat("\ndeath ").concat(worldCountry.totalDeath));
+    this.updateTableDataButton("World: cases: "
+      .concat(worldTotalCases)
+      .concat("\n\nrecovered ")
+      .concat(worldCountry.totalRecovered)
+      .concat("\ndeath ")
+      .concat(worldCountry.totalDeath));
 
     let sortConfig;
     this.listOfCountries.sort((elA, elB) => {
@@ -31,17 +35,24 @@ export class DataLinked {
 
     this.divListOfCountries = createEl("div", "flex flex_wrap");
     this.listOfCountries.forEach((el) => {
-      const countryButton = configurateButton(el.name.concat(" ").concat(sortConfig[1]).concat(" ").concat(el[sortConfig[2]]), "country_button");
+      const countryButton = configurateButton(el.name.concat(" ")
+        .concat(sortConfig[1])
+        .concat(" ")
+        .concat(el[sortConfig[2]]), "country_button");
+
       this.countryListButtons.push(countryButton);
       this.divListOfCountries.appendChild(countryButton);
-      /*       if (el.name === "World")
-              this.tableDataButton = countryButton; */
+
       countryButton.addEventListener("click", () => {
         console.log(el.name);
-        this.setGlobalCasesTitle(el.name + " " + sortConfig[1]);
+        this.setGlobalCasesTitle(el.name.concat(" ").concat(sortConfig[1]));
         this.setTextCases(el.getTotalCases());
-        this.updateTableDataButton(el.name.concat(" cases: ").concat(el.totalConfirmed).concat("\n\nrecovered ").concat(el.totalRecovered)
-      .concat("\ndeath ").concat(el.totalDeath));
+        this.updateTableDataButton(el.name.concat(" cases: ")
+          .concat(el.totalConfirmed)
+          .concat("\n\nrecovered ")
+          .concat(el.totalRecovered)
+          .concat("\ndeath ")
+          .concat(el.totalDeath));
       });
     });
 
@@ -132,14 +143,22 @@ export class DataLinked {
     this.divListOfCountries.innerText = "";
     this.countryListButtons = [];
     this.listOfCountries.forEach((el) => {
-      const countryButton = configurateButton(el.name.concat(" ").concat(sortConfig[1]).concat(" ").concat(el[sortConfig[2]]), "country_button", this.divListOfCountries);
+      const countryButton = configurateButton(el.name.concat(" ")
+        .concat(sortConfig[1])
+        .concat(" ")
+        .concat(el[sortConfig[2]]), "country_button", this.divListOfCountries);
+
       this.countryListButtons.push(countryButton);
       countryButton.addEventListener("click", () => {
         console.log(el.name);
-        this.setGlobalCasesTitle(el.name + " " + sortConfig[1]);
+        this.setGlobalCasesTitle(el.name.concat(" ").concat(sortConfig[1]));
         this.setTextCases(el.getTotalCases());
-        this.updateTableDataButton(el.name.concat(" cases: ").concat(el.totalConfirmed).concat("\n\nrecovered ").concat(el.totalRecovered)
-        .concat("\ndeath ").concat(el.totalDeath));
+        this.updateTableDataButton(el.name.concat(" cases: ")
+          .concat(el.totalConfirmed)
+          .concat("\n\nrecovered ")
+          .concat(el.totalRecovered)
+          .concat("\ndeath ")
+          .concat(el.totalDeath));
       });
     });
   }
@@ -234,6 +253,11 @@ export class DataLinked {
       case "todayRecoveredPer100": {
         break;
       }
+
+      default: {
+        break;
+      }
     }
+    return null;
   }
 }

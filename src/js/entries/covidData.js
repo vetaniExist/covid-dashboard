@@ -23,9 +23,9 @@ export class CovidData {
         flags = data2;
       });
       this.countries = data.Countries.map((el) => {
-        const curFlag = flags.find((flag) => flag.name === el.Country)
+        const curFlag = flags.find((flag) => flag.name === el.Country);
         if (curFlag) {
-          let country = new Country(el);
+          const country = new Country(el);
           country.flag = curFlag.flag;
           country.population = curFlag.population;
           return country;
@@ -55,7 +55,6 @@ export class CovidData {
     await this.parseData();
     return this.worldCountry;
   }
-
 
   async getWorldTotalCases() {
     if (this.worldData) {

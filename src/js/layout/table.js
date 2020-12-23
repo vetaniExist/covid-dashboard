@@ -1,18 +1,13 @@
-import { createElement as createEl, configurateButton } from "../utils/elementsUtils";
+import { createElement as createEl } from "../utils/elementsUtils";
 
 export class DashboardTable {
-  constructor(parentNode, data, dataLink) {
+  constructor(parentNode, dataLink) {
     console.log("dashboard table not impl");
     this.table = createEl("div", "covid_table", parentNode);
-    this.dataTypesArrayTotal = ["totalCases", "totalDeaths", "totalRecovered"/* , "totalCasesPer100", "totalDeathPer100", "totalRecoveredPer100" */];
-    this.dataTypesArrayToday = ["todayCases", "todayDeaths", "todayRecovered"/* , "todayCasesPer100", "todayDeathPer100", "todayRecoveredPer100" */];
-    this.currenMode = this.dataTypesArrayTotal;
-
-    this.constructListOfButtons(data, dataLink);
+    this.constructListOfButtons(dataLink);
   }
 
-  async constructListOfButtons(data, dataLink) {
-    this.listOfCountries = await data.getAllCountries();
+  async constructListOfButtons(dataLink) {
     this.controlPanel = createEl("div", "flex covid_table-control_panel", this.table);
 
     this.lArrow = dataLink.getLArrow();
@@ -32,10 +27,6 @@ export class DashboardTable {
 
     this.tableDataButton = dataLink.getTableDataButton();
     this.table.appendChild(this.tableDataButton);
-
-    this.countryListButtons = [];
-    // this.updateCountryListButtons(this.currenMode[0]);
-
   }
 }
 
