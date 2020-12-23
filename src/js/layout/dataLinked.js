@@ -3,8 +3,11 @@ import { createElement as createEl, configurateButton } from "../utils/elementsU
 export class DataLinked {
   constructor() {
     this.countryListButtons = [];
-    this.dataTypesArrayTotal = ["totalCases", "totalDeaths", "totalRecovered"/* , "totalCasesPer100", "totalDeathPer100", "totalRecoveredPer100" */];
-    this.dataTypesArrayToday = ["todayCases", "todayDeaths", "todayRecovered"/* , "todayCasesPer100", "todayDeathPer100", "todayRecoveredPer100" */];
+    this.dataTypesArrayTotal = ["totalCases", "totalDeaths", "totalRecovered",
+      "totalCasesPer100", "totalDeathPer100", "totalRecoveredPer100"];
+
+    this.dataTypesArrayToday = ["todayCases", "todayDeaths", "todayRecovered",
+      "todayCasesPer100", "todayDeathPer100", "todayRecoveredPer100"];
     this.currenMode = this.dataTypesArrayTotal;
   }
 
@@ -17,6 +20,7 @@ export class DataLinked {
     this.setTextCases(worldTotalCases);
 
     this.listOfCountries = await data.getAllCountries();
+    console.log(this.listOfCountries);
     this.listOfCountries.push(worldCountry);
 
     this.tableDataButton = createEl("div");
@@ -40,12 +44,11 @@ export class DataLinked {
 
       countryButton.addEventListener("click", () => {
         this.countryButtonClick(el, sortConfig, this.currenMode[0]);
-        /*         console.log(el.name);
-                this.setGlobalCasesTitle(el.name.concat(" ").concat(sortConfig[1]));
-                this.setTextCases(el.getTotalCases());
-                this.updateTableDataButton(el, this.currenMode[0]); */
       });
     });
+
+    worldCountry.population = this.listOfCountries.filter((el) => el.population)
+      .reduce((acc, el) => acc += el.population, 0);
 
     this.configurateControlButtons();
   }
@@ -70,7 +73,7 @@ export class DataLinked {
   }
 
   getNameFromTable() {
-    return this.tableDataButton.textContent.split('')[0];
+    return this.tableDataButton.textContent.split("")[0];
   }
 
   getCountryByName(name) {
@@ -83,6 +86,10 @@ export class DataLinked {
     return null;
   }
 
+  shouldGetInfoInPercentes(mode) {
+    return mode.indexOf("Per") > -1;
+  }
+
   updateTableDataButton(el = null, mode) {
     if (!el) {
       const curCountry = this.getCountryByName(this.getNameFromTable());
@@ -91,23 +98,32 @@ export class DataLinked {
       }
       return null;
     }
+
     const tableData = this.dataTypesArrayTotal.indexOf(mode) > -1 ? {
-      confirmed: "totalConfirmed",
-      recovered: "totalRecovered",
-      death: "totalDeath",
+      confirmed: el.totalConfirmed,
+      recovered: el.totalRecovered,
+      death: el.totalDeath,
     }
       : {
-        confirmed: "todayConfirmed",
-        recovered: "todayRecovered",
-        death: "todayDeath",
+        confirmed: el.todayConfirmed,
+        recovered: el.todayRecovered,
+        death: el.todayDeath,
       };
 
+    if (this.shouldGetInfoInPercentes(mode)) {
+      console.log("делим");
+      console.log(el);
+      tableData.confirmed = (tableData.confirmed / el.population) * 100000;
+      tableData.recovered = (tableData.recovered / el.population) * 100000;
+      tableData.death = (tableData.recovered / el.population) * 100000;
+    }
+
     this.tableDataButton.textContent = el.name.concat(" cases: ")
-      .concat(el[tableData.confirmed])
+      .concat(tableData.confirmed)
       .concat("\n\nrecovered ")
-      .concat(el[tableData.recovered])
+      .concat(tableData.recovered)
       .concat("\ndeath ")
-      .concat(el[tableData.death]);
+      .concat(tableData.death);
   }
 
   countryButtonClick(el, sortConfig, mode) {
@@ -193,9 +209,11 @@ export class DataLinked {
         const newModeIndex = this.currenMode.length - 1;
         this.setcontrolPanelDataText(this.currenMode[newModeIndex]);
         this.updateCountryListButtons(this.currenMode[newModeIndex]);
+        this.updateTableDataButton(null, this.currenMode[newModeIndex]);
       } else {
         this.setcontrolPanelDataText(this.currenMode[curModeIndex - 1]);
         this.updateCountryListButtons(this.currenMode[curModeIndex - 1]);
+        this.updateTableDataButton(null, this.currenMode[curModeIndex - 1]);
       }
     });
   }
@@ -206,9 +224,11 @@ export class DataLinked {
       if (curModeIndex === this.currenMode.length - 1) {
         this.setcontrolPanelDataText(this.currenMode[0]);
         this.updateCountryListButtons(this.currenMode[0]);
+        this.updateTableDataButton(null, this.currenMode[0]);
       } else {
         this.setcontrolPanelDataText(this.currenMode[curModeIndex + 1]);
         this.updateCountryListButtons(this.currenMode[curModeIndex + 1]);
+        this.updateTableDataButton(null, this.currenMode[curModeIndex + 1]);
       }
     });
   }
@@ -251,13 +271,16 @@ export class DataLinked {
         return [elB.totalRecovered - elA.totalRecovered, "revoc", "totalRecovered"];
       }
       case "totalCasesPer100": {
-        break;
+        return [(elB.totalConfirmed / elB.population) * 100000
+          - (elA.totalConfirmed / elA.population) * 100000, "cases", "totalConfirmed"];
       }
       case "totalDeathPer100": {
-        break;
+        return [(elB.totalDeath / elB.population) * 100000
+          - (elA.totalDeath / elA.population) * 100000, "cases", "totalDeath"];
       }
       case "totalRecoveredPer100": {
-        break;
+        return [(elB.totalRecovered / elB.population) * 100000
+          - (elA.totalRecovered / elA.population) * 100000, "cases", "totalRecovered"];
       }
 
       case "todayCases": {
@@ -270,13 +293,16 @@ export class DataLinked {
         return [elB.todayRecovered - elA.todayRecovered, "cases", "todayRecovered"];
       }
       case "todayCasesPer100": {
-        break;
+        return [(elB.todayConfirmed / elB.population) * 100000
+          - (elA.todayConfirmed / elA.population) * 100000, "cases", "todayConfirmed"];
       }
       case "todayDeathPer100": {
-        break;
+        return [(elB.todayDeath / elB.population) * 100000
+          - (elA.todayDeath / elA.population) * 100000, "cases", "todayDeath"];
       }
       case "todayRecoveredPer100": {
-        break;
+        return [(elB.todayRecovered / elB.population) * 100000
+          - (elA.todayRecovered / elA.population) * 100000, "cases", "todayRecovered"];
       }
 
       default: {
@@ -286,3 +312,5 @@ export class DataLinked {
     return null;
   }
 }
+
+export default DataLinked;
