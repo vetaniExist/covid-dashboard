@@ -115,7 +115,7 @@ footer {
 
 .country_button {
   width: 20vw;
-  height: 35px;
+  height: 60px;
   font-size: 14px;
   font-family: 'Quicksand', sans-serif;
   background: rgba(0, 0, 0, 0);
@@ -170,4 +170,9 @@ footer {
 .input_search-field {
   width: inherit;
   height: 2vh;
+}
+
+.flag_img{
+  width: 50px!important;
+  height: 30px;
 }

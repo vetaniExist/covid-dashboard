@@ -21,6 +21,7 @@ export class DataLinked {
 
     this.listOfCountries = await data.getAllCountries();
     console.log(this.listOfCountries);
+    this.loadFlags(this.listOfCountries);
     this.listOfCountries.push(worldCountry);
 
     this.tableDataButton = createEl("div");
@@ -33,12 +34,20 @@ export class DataLinked {
     });
 
     this.divListOfCountries = createEl("div", "countries_button_container");
-    // this.updateCountryListButtons(this.currenMode[0]);
     this.listOfCountries.forEach((el) => {
       const countryButton = configurateButton(el.name.concat(" ")
         .concat(sortConfig[1])
         .concat(" ")
         .concat(el[sortConfig[2]]), "country_button");
+
+      if (el.name !== "World" && el.flag) {
+        const flag = new Image();
+        flag.classList.add("flag_img");
+        flag.src = el.flag;
+        flag.loading = "lazy";
+        console.log(flag);
+        countryButton.appendChild(flag);
+      }
 
       this.countryListButtons.push(countryButton);
       this.divListOfCountries.appendChild(countryButton);
@@ -52,6 +61,16 @@ export class DataLinked {
       .reduce((acc, el) => acc += el.population, 0);
 
     this.configurateControlButtons();
+  }
+
+  async loadFlags(listOfCountries) {
+    this.arrayOfFlags = [];
+
+    listOfCountries.forEach((el) => {
+      const image = new Image();
+      image.src = el.flag;
+      this.arrayOfFlags[el.name] = image;
+    });
   }
 
   async configurateControlButtons() {
@@ -275,15 +294,14 @@ export class DataLinked {
     console.log("Отфильтровали страны");
     console.log(filteredCountrieNames);
 
-    const filteredButtons = this.countryListButtons.filter((el) => {
-      return filteredCountrieNames.filter((el2) => el.textContent.indexOf(el2.name) > -1).length > 0;
-    });
+    const filteredButtons = this.countryListButtons.filter((el) => filteredCountrieNames
+      .filter((el2) => el.textContent.indexOf(el2.name) > -1).length > 0);
 
     console.log("Отфильтровали кнопки");
     console.log(filteredButtons);
     this.countryListButtons.forEach((el) => {
       if (!filteredButtons.includes(el)) {
-        el.classList.add("display-none")
+        el.classList.add("display-none");
       } else {
         el.classList.remove("display-none");
       }
