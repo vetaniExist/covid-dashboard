@@ -14,13 +14,15 @@ export class CountryList {
   }
 
   activateInputField(dataLink) {
+    this.inputField.addEventListener("keypress", (e) => {
+      this.filter = this.inputField.value + e.key;
+      console.log("this filter", this.filter);
+      dataLink.filterButtonsUsingCountryName(this.filter);
+    });
+
     this.inputField.addEventListener("keydown", (e) => {
       console.log("keydiwn");
-      if (e.key !== "Backspace") {
-        this.filter = this.inputField.value + e.key;
-        console.log("this filter", this.filter);
-        dataLink.filterButtonsUsingCountryName(this.filter);
-      } else if (this.filter.length) {
+      if (this.filter.length && e.key === "Backspace") {
         this.filter = this.filter.substring(0, this.filter.length - 1);
         dataLink.filterButtonsUsingCountryName(this.filter);
       }
