@@ -1,5 +1,6 @@
 import { createElement as createEl } from "../utils/elementsUtils";
 import { CovidData as CData } from "../entries/covidData";
+import { DataLinked as DataLink } from "./dataLinked";
 
 import { DashboardHeader as DHeader } from "./dashboardHeader";
 import { DashboardTable as Table } from "./table";
@@ -18,6 +19,8 @@ export class CovidDashboardLayout {
   async configurateLayout() {
     this.data = new CData();
     await this.data.parseData();
+    this.dataLink = new DataLink();
+    await this.dataLink.configurateData(this.data);
 
     this.body = document.body;
     this.wrap = createEl("div", "flex flex_wrap wrapper", this.body);
@@ -30,10 +33,10 @@ export class CovidDashboardLayout {
     this.table = new Table(this.tableAndGraphBox, this.data);
     this.graph = new Graph(this.tableAndGraphBox);
 
-    this.globalCases = new GCases(this.countryCasesBox, this.data);
+    this.globalCases = new GCases(this.countryCasesBox, this.dataLink);
     this.countryList = new DashboarList(this.countryCasesBox);
 
-    this.countryList.constructListOfButtons(this.data, this.globalCases.getTextCasesField());
+    this.countryList.constructListOfButtons(this.dataLink);
 
     this.configurateBody();
     this.configurateFooter();

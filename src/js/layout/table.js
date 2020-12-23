@@ -30,7 +30,7 @@ export class DashboardTable {
     this.activateTotalButton();
     this.activateTodayButton();
 
-    this.updateCountryListButtons(this.currenMode[0]);
+    // this.updateCountryListButtons(this.currenMode[0]);
 
   }
 
@@ -43,7 +43,6 @@ export class DashboardTable {
     this.countryList.innerText = "";
     this.countryListButtons = [];
     this.listOfCountries.forEach((el) => {
-      // const countryButton = configurateButton(el.totalConfirmed + " " + el.name, "country_button", this.countryList);
       const countryButton = configurateButton(el.name.concat(" ").concat(sortConfig[1]).concat(" ").concat(el[sortConfig[2]]), "country_button", this.countryList);
       this.countryListButtons.push(countryButton);
     });
