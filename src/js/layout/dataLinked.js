@@ -33,6 +33,7 @@ export class DataLinked {
     });
 
     this.divListOfCountries = createEl("div", "flex flex_wrap");
+    // this.updateCountryListButtons(this.currenMode[0]);
     this.listOfCountries.forEach((el) => {
       const countryButton = configurateButton(el.name.concat(" ")
         .concat(sortConfig[1])
@@ -73,7 +74,7 @@ export class DataLinked {
   }
 
   getNameFromTable() {
-    return this.tableDataButton.textContent.split("")[0];
+    return this.tableDataButton.textContent.split(" ")[0];
   }
 
   getCountryByName(name) {
