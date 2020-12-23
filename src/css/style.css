@@ -78,9 +78,12 @@ body {
   height: 60vh;
   width: 20vw;
   background-color: violet;
-
   overflow-x: hidden;
   overflow-y: scroll;
+}
+
+.covid_country_list_table {
+  width: inherit;
 }
 
 footer {
@@ -118,4 +121,38 @@ footer {
   background: rgba(0, 0, 0, 0);
   color: black;
   border: 2px solid black;
+}
+
+.covid_table-control_panel {
+  width: inherit;
+  background-color: red;
+  height: 5vh;
+
+  justify-content: space-between;
+}
+
+.covid_table-control_panel-data{
+  width: 15vw;
+  background-color: purple;
+  height: inherit;
+}
+
+.lArrow {}
+
+.lArrow::after, .rArrow::after {
+  position: relative;
+  top: -2px;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.lArrow::after {
+  content: url(../assets/images/left_arrow.svg);
+}
+
+.rArrow {}
+
+.rArrow::after {
+  content: url(../assets/images/right_arrow.svg);
 }
