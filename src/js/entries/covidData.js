@@ -66,16 +66,6 @@ export class CovidData {
     await this.parseData();
     return this.worldData.TotalConfirmed;
   }
-
-  /*   async getWorld() {
-      if (this.worldCountry) {
-        console.log("Возвращаем world");
-        return this.worldCountry;
-      }
-      console.log("Ждем выполнение getWorld");
-      await this.parseData();
-      return this.worldCountry;
-    } */
 }
 
 export default CovidData;

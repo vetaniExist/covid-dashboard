@@ -30,7 +30,7 @@ export class CovidDashboardLayout {
     this.map = new DMap(this.mainContentBox);
     this.tableAndGraphBox = createEl("div", "flex flex_wrap table_graph-box", this.mainContentBox);
 
-    this.table = new Table(this.tableAndGraphBox, this.data);
+    this.table = new Table(this.tableAndGraphBox, this.data, this.dataLink);
     this.graph = new Graph(this.tableAndGraphBox);
 
     this.globalCases = new GCases(this.countryCasesBox, this.dataLink);
