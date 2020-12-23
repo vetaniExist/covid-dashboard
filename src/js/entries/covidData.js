@@ -1,6 +1,6 @@
 import { Country, createWorldCountry } from "./country";
 
-import { getCountries } from "../utils/covidAPIUtils";
+import { getCountries, getPopulationAndFlag } from "../utils/covidAPIUtils";
 
 let covidDataInstance = null;
 
@@ -13,12 +13,25 @@ export class CovidData {
   }
 
   async parseData() {
-    await getCountries().then((data) => {
+    await getCountries().then(async (data) => {
       console.log("заполняем данные");
       this.worldData = data.Global;
       this.worldCountry = createWorldCountry(this.worldData);
       console.log(this.worldData);
-      this.countries = data.Countries.map((el) => new Country(el));
+      let flags;
+      await getPopulationAndFlag().then((data2) => {
+        flags = data2;
+      });
+      this.countries = data.Countries.map((el) => {
+        const curFlag = flags.find((flag) => flag.name === el.Country)
+        if (curFlag) {
+          let country = new Country(el);
+          country.flag = curFlag.flag;
+          country.population = curFlag.population;
+          return country;
+        }
+        return new Country(el);
+      });
       console.log("вот тут");
     });
   }
@@ -54,15 +67,15 @@ export class CovidData {
     return this.worldData.TotalConfirmed;
   }
 
-/*   async getWorld() {
-    if (this.worldCountry) {
-      console.log("Возвращаем world");
+  /*   async getWorld() {
+      if (this.worldCountry) {
+        console.log("Возвращаем world");
+        return this.worldCountry;
+      }
+      console.log("Ждем выполнение getWorld");
+      await this.parseData();
       return this.worldCountry;
-    }
-    console.log("Ждем выполнение getWorld");
-    await this.parseData();
-    return this.worldCountry;
-  } */
+    } */
 }
 
 export default CovidData;
