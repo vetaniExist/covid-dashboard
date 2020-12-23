@@ -4,8 +4,8 @@ export class DashboardTable {
   constructor(parentNode, data) {
     console.log("dashboard table not impl");
     this.table = createEl("div", "covid_table", parentNode);
-    this.dataTypesArrayTotal = ["totalCases", "totalDeaths", "totalRecovered", "totalCasesPer100", "totalDeathPer100", "totalRecoveredPer100"];
-    this.dataTypesArrayToday = ["todayCases", "todayDeaths", "todayRecovered", "todayCasesPer100", "todayDeathPer100", "todayRecoveredPer100"];
+    this.dataTypesArrayTotal = ["totalCases", "totalDeaths", "totalRecovered"/* , "totalCasesPer100", "totalDeathPer100", "totalRecoveredPer100" */];
+    this.dataTypesArrayToday = ["todayCases", "todayDeaths", "todayRecovered"/* , "todayCasesPer100", "todayDeathPer100", "todayRecoveredPer100" */];
     this.currenMode = this.dataTypesArrayTotal;
 
     this.constructListOfButtons(data);
@@ -30,20 +30,23 @@ export class DashboardTable {
     this.activateTotalButton();
     this.activateTodayButton();
 
-    let sortConfig;
-    this.listOfCountries.sort((elA, elB) => {
-      sortConfig = this.getDataSortFunc(this.currenMode[0], elA, elB);
-      return sortConfig[0];
-    });
-    this.listOfCountries.forEach((el) => {
-      // const countryButton = configurateButton(el.totalConfirmed + " " + el.name, "country_button", this.countryList);
-      const countryButton = configurateButton(el.name.concat(" ").concat(sortConfig[1]).concat(" ").concat(sortConfig[2]), "country_button", this.countryList);
-      this.countryListButtons.push(countryButton);
-    });
+    this.updateCountryListButtons(this.currenMode[0]);
+
   }
 
-  updateCountryListButtons() {
-    this.countryListButtons;
+  updateCountryListButtons(mode) {
+    let sortConfig;
+    this.listOfCountries.sort((elA, elB) => {
+      sortConfig = this.getDataSortFunc(mode, elA, elB);
+      return sortConfig[0];
+    });
+    this.countryList.innerText = "";
+    this.countryListButtons = [];
+    this.listOfCountries.forEach((el) => {
+      // const countryButton = configurateButton(el.totalConfirmed + " " + el.name, "country_button", this.countryList);
+      const countryButton = configurateButton(el.name.concat(" ").concat(sortConfig[1]).concat(" ").concat(el[sortConfig[2]]), "country_button", this.countryList);
+      this.countryListButtons.push(countryButton);
+    });
   }
 
   setcontrolPanelDataText(newText) {
@@ -58,9 +61,12 @@ export class DashboardTable {
     this.lArrow.addEventListener("click", () => {
       const curModeIndex = this.currenMode.indexOf(this.getcontrolPanelDataText());
       if (curModeIndex === 0) {
-        this.setcontrolPanelDataText(this.currenMode[this.currenMode.length - 1]);
+        const newModeIndex = this.currenMode.length - 1;
+        this.setcontrolPanelDataText(this.currenMode[newModeIndex]);
+        this.updateCountryListButtons(this.currenMode[newModeIndex]);
       } else {
         this.setcontrolPanelDataText(this.currenMode[curModeIndex - 1]);
+        this.updateCountryListButtons(this.currenMode[curModeIndex - 1]);
       }
     });
   }
@@ -70,8 +76,10 @@ export class DashboardTable {
       const curModeIndex = this.currenMode.indexOf(this.getcontrolPanelDataText());
       if (curModeIndex === this.currenMode.length - 1) {
         this.setcontrolPanelDataText(this.currenMode[0]);
+        this.updateCountryListButtons(this.currenMode[0]);
       } else {
         this.setcontrolPanelDataText(this.currenMode[curModeIndex + 1]);
+        this.updateCountryListButtons(this.currenMode[curModeIndex + 1]);
       }
     });
   }
@@ -83,6 +91,7 @@ export class DashboardTable {
       if (this.currenMode !== this.dataTypesArrayTotal) {
         this.currenMode = this.dataTypesArrayTotal;
         this.setcontrolPanelDataText(this.currenMode[curModeIndex]);
+        this.updateCountryListButtons(this.currenMode[curModeIndex]);
       }
     });
   }
@@ -94,6 +103,7 @@ export class DashboardTable {
       if (this.currenMode !== this.dataTypesArrayToday) {
         this.currenMode = this.dataTypesArrayToday;
         this.setcontrolPanelDataText(this.currenMode[curModeIndex]);
+        this.updateCountryListButtons(this.currenMode[curModeIndex]);
       }
     });
   }
@@ -101,13 +111,13 @@ export class DashboardTable {
   getDataSortFunc(currentControlPanelDataText, elA, elB) {
     switch (currentControlPanelDataText) {
       case "totalCases": {
-        return [elB.totalConfirmed - elA.totalConfirmed, "cases", elB.totalConfirmed];
+        return [elB.totalConfirmed - elA.totalConfirmed, "cases", "totalConfirmed"];
       }
       case "totalDeaths": {
-        break;
+        return [elB.totalDeath - elA.totalDeath, "deaths", "totalDeath"];
       }
       case "totalRecovered": {
-        break;
+        return [elB.totalRecovered - elA.totalRecovered, "revoc", "totalRecovered"];
       }
       case "totalCasesPer100": {
         break;
@@ -120,13 +130,13 @@ export class DashboardTable {
       }
 
       case "todayCases": {
-        break
+        return [elB.todayConfirmed - elA.todayConfirmed, "cases", "todayConfirmed"];
       }
       case "todayDeaths": {
-        break;
+        return [elB.todayDeath - elA.todayDeath, "deaths", "todayDeath"];
       }
       case "todayRecovered": {
-        break;
+        return [elB.todayRecovered - elA.todayRecovered, "cases", "todayRecovered"];
       }
       case "todayCasesPer100": {
         break;
