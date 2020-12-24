@@ -77,7 +77,7 @@ export class DataLinked {
     this.setTextCases(worldTotalCases);
 
     this.listOfCountries = await data.getAllCountries();
-    console.log(this.listOfCountries);
+    // console.log(this.listOfCountries);
     this.loadFlags(this.listOfCountries);
     this.listOfCountries.push(worldCountry);
 

@@ -20,7 +20,7 @@ export class DashboardMap {
     await this.map.setAttribute("id", "mapid");
     const mapOptions = {
       center: [17.385044, 78.486671],
-      zoom: 3,
+      zoom: 1,
       maxZoom: 10,
       // minZoom: 1,
     };
@@ -31,18 +31,45 @@ export class DashboardMap {
       console.log(e);
       console.log(e.latlng)
     });
-    L.geoJSON(await getGeoJSON()).addTo(mymap);;
-    
+    let geoJSON = await getGeoJSON();
 
 
-    this.countries = await this.data.getAllCountries();
-    console.log(this.countries);
-    const countriesName = this.countries.map((el) => el.name);
-
-    countriesName.forEach(async (el) => {
-      // (nominatimOSMRequest(el));
+    // const arrOfCountrysCenter = [];
+    const afgan = geoJSON.features[0];
+    console.log(afgan);
+    console.log(afgan.geometry.coordinates[0].slice());
+    geoJSON.features.forEach((country, ind) => {
+      if (country.geometry.type === "Polygon") {
+        country.geometry.coordinates.forEach((polygon) => {
+          polygon.forEach((el, index) => {
+            polygon[index] = [el[1], el[0]];
+          });
+        });
+      } else if (country.geometry.type === "MultiPolygon") {
+        country.geometry.coordinates.forEach((polygons) => {
+          polygons.forEach((polygon) => {
+            console.log(polygon);
+            polygon.forEach((el, index) => {
+              console.log(index, el);
+              polygon[index] = [el[1], el[0]];
+            });
+          });
+        });
+      }
+      L.polygon(country.geometry.coordinates, country.properties).addTo(mymap);
     });
-    console.log(countriesName);
+
+    // const RussiaFromGeoJSON = geoJSON.features.filter((el) => el.properties.name === "Russia")[0];
+    // console.log(RussiaFromGeoJSON);
+
+    /*     this.countries = await this.data.getAllCountries();
+        console.log(this.countries.length);
+        const countriesName = this.countries.map((el) => el.name);
+    
+        countriesName.forEach(async (el) => {
+          // (nominatimOSMRequest(el));
+        }); */
+    // console.log(countriesName);
   }
 }
 
