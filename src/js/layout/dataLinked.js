@@ -1,5 +1,62 @@
 import { createElement as createEl, configurateButton } from "../utils/elementsUtils";
 
+function shouldGetInfoInPercentes(mode) {
+  return mode.indexOf("Per") > -1;
+}
+
+function getDataSortFunc(currentControlPanelDataText, elA, elB) {
+  switch (currentControlPanelDataText) {
+    case "totalCases": {
+      return [elB.totalConfirmed - elA.totalConfirmed, "cases", "totalConfirmed"];
+    }
+    case "totalDeaths": {
+      return [elB.totalDeath - elA.totalDeath, "deaths", "totalDeath"];
+    }
+    case "totalRecovered": {
+      return [elB.totalRecovered - elA.totalRecovered, "revoc", "totalRecovered"];
+    }
+    case "totalCasesPer100": {
+      return [(elB.totalConfirmed / elB.population) * 100000
+        - (elA.totalConfirmed / elA.population) * 100000, "cases", "totalConfirmed"];
+    }
+    case "totalDeathPer100": {
+      return [(elB.totalDeath / elB.population) * 100000
+        - (elA.totalDeath / elA.population) * 100000, "cases", "totalDeath"];
+    }
+    case "totalRecoveredPer100": {
+      return [(elB.totalRecovered / elB.population) * 100000
+        - (elA.totalRecovered / elA.population) * 100000, "cases", "totalRecovered"];
+    }
+
+    case "todayCases": {
+      return [elB.todayConfirmed - elA.todayConfirmed, "cases", "todayConfirmed"];
+    }
+    case "todayDeaths": {
+      return [elB.todayDeath - elA.todayDeath, "deaths", "todayDeath"];
+    }
+    case "todayRecovered": {
+      return [elB.todayRecovered - elA.todayRecovered, "cases", "todayRecovered"];
+    }
+    case "todayCasesPer100": {
+      return [(elB.todayConfirmed / elB.population) * 100000
+        - (elA.todayConfirmed / elA.population) * 100000, "cases", "todayConfirmed"];
+    }
+    case "todayDeathPer100": {
+      return [(elB.todayDeath / elB.population) * 100000
+        - (elA.todayDeath / elA.population) * 100000, "cases", "todayDeath"];
+    }
+    case "todayRecoveredPer100": {
+      return [(elB.todayRecovered / elB.population) * 100000
+        - (elA.todayRecovered / elA.population) * 100000, "cases", "todayRecovered"];
+    }
+
+    default: {
+      break;
+    }
+  }
+  return null;
+}
+
 export class DataLinked {
   constructor() {
     this.countryListButtons = [];
@@ -29,7 +86,7 @@ export class DataLinked {
 
     let sortConfig;
     this.listOfCountries.sort((elA, elB) => {
-      sortConfig = this.getDataSortFunc(this.currenMode[0], elA, elB);
+      sortConfig = getDataSortFunc(this.currenMode[0], elA, elB);
       return sortConfig[0];
     });
 
@@ -58,7 +115,7 @@ export class DataLinked {
     });
 
     worldCountry.population = this.listOfCountries.filter((el) => el.population)
-      .reduce((acc, el) => acc += el.population, 0);
+      .reduce((acc, el) => acc + el.population, 0);
 
     this.configurateControlButtons();
   }
@@ -106,10 +163,6 @@ export class DataLinked {
     return null;
   }
 
-  shouldGetInfoInPercentes(mode) {
-    return mode.indexOf("Per") > -1;
-  }
-
   updateTableDataButton(el = null, mode) {
     if (!el) {
       const curCountry = this.getCountryByName(this.getNameFromTable());
@@ -130,7 +183,7 @@ export class DataLinked {
         death: el.todayDeath,
       };
 
-    if (this.shouldGetInfoInPercentes(mode)) {
+    if (shouldGetInfoInPercentes(mode)) {
       console.log("делим");
       console.log(el);
       tableData.confirmed = (tableData.confirmed / el.population) * 100000;
@@ -144,6 +197,8 @@ export class DataLinked {
       .concat(tableData.recovered)
       .concat("\ndeath ")
       .concat(tableData.death);
+
+    return null;
   }
 
   countryButtonClick(el, sortConfig, mode) {
@@ -204,7 +259,7 @@ export class DataLinked {
   updateCountryListButtons(mode) {
     let sortConfig;
     this.listOfCountries.sort((elA, elB) => {
-      sortConfig = this.getDataSortFunc(mode, elA, elB);
+      sortConfig = getDataSortFunc(mode, elA, elB);
       return sortConfig[0];
     });
     this.divListOfCountries.innerText = "";
@@ -306,59 +361,6 @@ export class DataLinked {
         el.classList.remove("display-none");
       }
     });
-  }
-
-  getDataSortFunc(currentControlPanelDataText, elA, elB) {
-    switch (currentControlPanelDataText) {
-      case "totalCases": {
-        return [elB.totalConfirmed - elA.totalConfirmed, "cases", "totalConfirmed"];
-      }
-      case "totalDeaths": {
-        return [elB.totalDeath - elA.totalDeath, "deaths", "totalDeath"];
-      }
-      case "totalRecovered": {
-        return [elB.totalRecovered - elA.totalRecovered, "revoc", "totalRecovered"];
-      }
-      case "totalCasesPer100": {
-        return [(elB.totalConfirmed / elB.population) * 100000
-          - (elA.totalConfirmed / elA.population) * 100000, "cases", "totalConfirmed"];
-      }
-      case "totalDeathPer100": {
-        return [(elB.totalDeath / elB.population) * 100000
-          - (elA.totalDeath / elA.population) * 100000, "cases", "totalDeath"];
-      }
-      case "totalRecoveredPer100": {
-        return [(elB.totalRecovered / elB.population) * 100000
-          - (elA.totalRecovered / elA.population) * 100000, "cases", "totalRecovered"];
-      }
-
-      case "todayCases": {
-        return [elB.todayConfirmed - elA.todayConfirmed, "cases", "todayConfirmed"];
-      }
-      case "todayDeaths": {
-        return [elB.todayDeath - elA.todayDeath, "deaths", "todayDeath"];
-      }
-      case "todayRecovered": {
-        return [elB.todayRecovered - elA.todayRecovered, "cases", "todayRecovered"];
-      }
-      case "todayCasesPer100": {
-        return [(elB.todayConfirmed / elB.population) * 100000
-          - (elA.todayConfirmed / elA.population) * 100000, "cases", "todayConfirmed"];
-      }
-      case "todayDeathPer100": {
-        return [(elB.todayDeath / elB.population) * 100000
-          - (elA.todayDeath / elA.population) * 100000, "cases", "todayDeath"];
-      }
-      case "todayRecoveredPer100": {
-        return [(elB.todayRecovered / elB.population) * 100000
-          - (elA.todayRecovered / elA.population) * 100000, "cases", "todayRecovered"];
-      }
-
-      default: {
-        break;
-      }
-    }
-    return null;
   }
 }
 

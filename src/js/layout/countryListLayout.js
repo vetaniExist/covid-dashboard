@@ -1,4 +1,4 @@
-import { createElement as createEl/* , configurateButton as createButton */ } from "../utils/elementsUtils";
+import { createElement as createEl } from "../utils/elementsUtils";
 
 export class CountryList {
   constructor(parentNode) {
