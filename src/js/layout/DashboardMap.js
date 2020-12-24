@@ -4,7 +4,8 @@ import "../../../node_modules/leaflet/dist/leaflet.css";
 
 import { CovidData as CData } from "../entries/covidData";
 
-import { nominatimOSMRequest } from "../utils/mapAPIUtils"
+import { nominatimOSMRequest, getGeoJSON } from "../utils/mapAPIUtils"
+import { geoJSON } from "leaflet";
 
 export class DashboardMap {
   constructor(parentNode) {
@@ -21,20 +22,25 @@ export class DashboardMap {
       center: [17.385044, 78.486671],
       zoom: 3,
       maxZoom: 10,
+      // minZoom: 1,
     };
     const mymap = L.map("mapid", mapOptions);// setView([51.505, -0.09], 13);
     const layer = new L.TileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png");
     mymap.addLayer(layer);
     mymap.on("click", (e) => {
+      console.log(e);
       console.log(e.latlng)
     });
+    L.geoJSON(await getGeoJSON()).addTo(mymap);;
+    
+
 
     this.countries = await this.data.getAllCountries();
     console.log(this.countries);
     const countriesName = this.countries.map((el) => el.name);
 
     countriesName.forEach(async (el) => {
-      (nominatimOSMRequest(el));
+      // (nominatimOSMRequest(el));
     });
     console.log(countriesName);
   }
