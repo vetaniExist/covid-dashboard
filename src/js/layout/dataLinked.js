@@ -102,7 +102,7 @@ export class DataLinked {
         flag.classList.add("flag_img");
         flag.src = el.flag;
         flag.loading = "lazy";
-        console.log(flag);
+        /*    console.log(flag); */
         countryButton.appendChild(flag);
       }
 
