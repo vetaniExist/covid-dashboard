@@ -7,6 +7,12 @@ import { CovidData as CData } from "../entries/covidData";
 import { nominatimOSMRequest, getGeoJSON } from "../utils/mapAPIUtils"
 import { geoJSON } from "leaflet";
 
+import iconP from "../../../node_modules/leaflet/dist/images/marker-icon.png";
+import shadow from "../../../node_modules/leaflet/dist/images/marker-shadow.png";
+import { icon, Marker } from 'leaflet';
+
+
+
 export class DashboardMap {
   constructor(parentNode) {
     console.log("MapLayout not impl");
@@ -54,12 +60,19 @@ export class DashboardMap {
         });
       }
       const polygon = L.polygon(country.geometry.coordinates, country.properties).addTo(mymap);
+      const center = polygon.getBounds().getCenter();
+      L.circle(center, {
+        color: "red",
+        fillColor: "#f03",
+        fillOpacity: 0.5,
+        radius: 50.0,
+      })
+        .addTo(mymap);
       polygon.on("mouseout", () => {
       });
       polygon.on("mouseover", (e) => {
         console.log(country.properties.name);
         console.log(e.latlng)
-        const center = polygon.getBounds().getCenter();
         console.log(center);
         L.popup().setLatLng(center).setContent(`<p>${country.properties.name}<br/></p>`).openOn(mymap);
         // this.popupDiv.textContent = country.properties.name;
