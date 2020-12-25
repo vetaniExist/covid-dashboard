@@ -287,11 +287,13 @@ export class DataLinked {
         this.updateCountryListButtons(this.currenMode[newModeIndex]);
         this.updateTableDataButton(null, this.currenMode[newModeIndex]);
         this.filterButtonsUsingCountryName(this.filter);
+        this.updateMapMarkers(this.currenMode[newModeIndex]);
       } else {
         this.setcontrolPanelDataText(this.currenMode[curModeIndex - 1]);
         this.updateCountryListButtons(this.currenMode[curModeIndex - 1]);
         this.updateTableDataButton(null, this.currenMode[curModeIndex - 1]);
         this.filterButtonsUsingCountryName(this.filter);
+        this.updateMapMarkers(this.currenMode[curModeIndex - 1]);
       }
     });
   }
@@ -304,11 +306,13 @@ export class DataLinked {
         this.updateCountryListButtons(this.currenMode[0]);
         this.updateTableDataButton(null, this.currenMode[0]);
         this.filterButtonsUsingCountryName(this.filter);
+        this.updateMapMarkers(this.currenMode[0]);
       } else {
         this.setcontrolPanelDataText(this.currenMode[curModeIndex + 1]);
         this.updateCountryListButtons(this.currenMode[curModeIndex + 1]);
         this.updateTableDataButton(null, this.currenMode[curModeIndex + 1]);
         this.filterButtonsUsingCountryName(this.filter);
+        this.updateMapMarkers(this.currenMode[curModeIndex + 1]);
       }
     });
   }
@@ -323,6 +327,7 @@ export class DataLinked {
         this.updateCountryListButtons(this.currenMode[curModeIndex]);
         this.updateTableDataButton(null, this.currenMode[curModeIndex]);
         this.filterButtonsUsingCountryName(this.filter);
+        this.updateMapMarkers(this.currenMode[curModeIndex]);
       }
     });
   }
@@ -337,6 +342,7 @@ export class DataLinked {
         this.updateCountryListButtons(this.currenMode[curModeIndex]);
         this.updateTableDataButton(null, this.currenMode[curModeIndex]);
         this.filterButtonsUsingCountryName(this.filter);
+        this.updateMapMarkers(this.currenMode[curModeIndex]);
       }
     });
   }
@@ -362,6 +368,14 @@ export class DataLinked {
         el.classList.remove("display-none");
       }
     });
+  }
+
+  setMap(mapObj) {
+    this.map = mapObj;
+  }
+
+  updateMapMarkers(cpd){
+    this.map.updateAllMarkers(cpd, this.shouldGetInfoInPercentes(cpd));
   }
 }
 
