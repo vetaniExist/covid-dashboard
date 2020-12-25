@@ -13,11 +13,12 @@ export class DashboardMap {
     this.map = createEl("div", "covid_map", parentNode);
     this.constructMap();
     this.data = new CData();
+    // this.popupDiv = createEl("div", "display-none flex popup_div", this.map);
   }
 
   async constructMap() {
-    // this.leafletMapContainer = createEl()
-    await this.map.setAttribute("id", "mapid");
+    this.leafletMapContainer = createEl("div", "covid_map-container", this.map)
+    await this.leafletMapContainer.setAttribute("id", "mapid");
     const mapOptions = {
       center: [17.385044, 78.486671],
       zoom: 1,
@@ -27,10 +28,6 @@ export class DashboardMap {
     const mymap = L.map("mapid", mapOptions);// setView([51.505, -0.09], 13);
     const layer = new L.TileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png");
     mymap.addLayer(layer);
-    mymap.on("click", (e) => {
-      console.log(e);
-      console.log(e.latlng)
-    });
     let geoJSON = await getGeoJSON();
 
 
@@ -48,28 +45,28 @@ export class DashboardMap {
       } else if (country.geometry.type === "MultiPolygon") {
         country.geometry.coordinates.forEach((polygons) => {
           polygons.forEach((polygon) => {
-            console.log(polygon);
+            // console.log(polygon);
             polygon.forEach((el, index) => {
-              console.log(index, el);
+              // console.log(index, el);
               polygon[index] = [el[1], el[0]];
             });
           });
         });
       }
-      L.polygon(country.geometry.coordinates, country.properties).addTo(mymap);
+      const polygon = L.polygon(country.geometry.coordinates, country.properties).addTo(mymap);
+      polygon.on("mouseout", () => {
+      });
+      polygon.on("mouseover", (e) => {
+        console.log(country.properties.name);
+        console.log(e.latlng)
+        const center = polygon.getBounds().getCenter();
+        console.log(center);
+        L.popup().setLatLng(center).setContent(`<p>${country.properties.name}<br/></p>`).openOn(mymap);
+        // this.popupDiv.textContent = country.properties.name;
+        // this.popupDiv.classList.remove("display-nonw");
+        // this.map.appendChild(this.popupDiv);
+      });
     });
-
-    // const RussiaFromGeoJSON = geoJSON.features.filter((el) => el.properties.name === "Russia")[0];
-    // console.log(RussiaFromGeoJSON);
-
-    /*     this.countries = await this.data.getAllCountries();
-        console.log(this.countries.length);
-        const countriesName = this.countries.map((el) => el.name);
-    
-        countriesName.forEach(async (el) => {
-          // (nominatimOSMRequest(el));
-        }); */
-    // console.log(countriesName);
   }
 }
 
