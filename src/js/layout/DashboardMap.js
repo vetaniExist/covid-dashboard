@@ -5,30 +5,30 @@ import { createElement as createEl } from "../utils/elementsUtils";
 
 import { CovidData as CData } from "../entries/covidData";
 import { getGeoJSON } from "../utils/mapAPIUtils";
-import { getDataSortFunc } from "./dataLinked";
+import { getDataSortFunc, shouldGetInfoInPercentes } from "./dataLinked";
 
 /* eslint-disable no-param-reassign */
 function updateMarker(marker, value, isPercent) {
   // 100000
   //          18650454
   //          1362564
-  if ((value > 250000 & !isPercent) || (value > 2.5 & isPercent)) {
+  if ((value > 250000 && !isPercent) || (value > 2.5 && isPercent)) {
     // console.log("find black");
     marker.options.color = "black";
     marker.setRadius(9.0);
     return marker;
   }
-  if ((value > 100000 & !isPercent) || (value > 1.0 & isPercent)) {
+  if ((value > 100000 && !isPercent) || (value > 1.0 && isPercent)) {
     marker.options.color = "darkgreen";
     marker.setRadius(7.0);
     return marker;
   }
-  if ((value > 10000 & !isPercent) || (value > 0.1 & isPercent)) {
+  if ((value > 10000 && !isPercent) || (value > 0.1 && isPercent)) {
     marker.options.color = "purple";
     marker.setRadius(5.0);
     return marker;
   }
-  if ((value > 5000 & !isPercent) || (value > 0.05 & isPercent)) {
+  if ((value > 5000 && !isPercent) || (value > 0.05 && isPercent)) {
     marker.options.color = "red";
     marker.setRadius(3.0);
     console.log(marker);
@@ -40,6 +40,20 @@ function updateMarker(marker, value, isPercent) {
   return marker;
 }
 /* eslint-enable no-param-reassign */
+
+function createMap() {
+  const mapOptions = {
+    center: [17.385044, 78.486671],
+    zoom: 1,
+    maxZoom: 10,
+    // minZoom: 1,
+  };
+
+  const mymap = L.map("mapid", mapOptions);
+  new L.TileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(mymap);
+
+  return mymap;
+}
 
 export class DashboardMap {
   constructor(parentNode, datalinked) {
@@ -58,7 +72,7 @@ export class DashboardMap {
     console.log("страны");
     console.log(this.countries);
 
-    const mymap = this.createMap();
+    const mymap = createMap();
     this.createLegend(mymap);
 
     const geoJSON = await getGeoJSON();
@@ -67,17 +81,21 @@ export class DashboardMap {
     geoJSON.features.forEach((country) => {
       if (country.geometry.type === "Polygon") {
         country.geometry.coordinates.forEach((polygon) => {
+          /* eslint-disable no-param-reassign */
           polygon.forEach((el, index) => {
             polygon[index] = [el[1], el[0]];
           });
+          /* eslint-enable no-param-reassign */
         });
       } else if (country.geometry.type === "MultiPolygon") {
         country.geometry.coordinates.forEach((polygons) => {
+          /* eslint-disable no-param-reassign */
           polygons.forEach((polygon) => {
             polygon.forEach((el, index) => {
               polygon[index] = [el[1], el[0]];
             });
           });
+          /* eslint-enable no-param-reassign */
         });
       }
       // name = 144
@@ -93,10 +111,8 @@ export class DashboardMap {
       const countryObj = this.countries.filter((el) => {
         const rule1 = el.name === country.properties.sovereignt;
         const rule2 = el.name === country.properties.name_long;
-        const rule3 = false || country.properties.formal_en && country.properties.formal_en.indexOf(el.name) > -1;
-        if (rule1 || rule2 || rule3) {
-          return el;
-        }
+        const rule3 = false || (country.properties.formal_en && country.properties.formal_en.indexOf(el.name) > -1);
+        return rule1 || rule2 || rule3;
       })[0];
       if (countryObj) {
         counter += 1;
@@ -125,28 +141,12 @@ export class DashboardMap {
     console.log(geoJSON.features.length);
   }
 
-  createMap() {
-    const mapOptions = {
-      center: [17.385044, 78.486671],
-      zoom: 1,
-      maxZoom: 10,
-      // minZoom: 1,
-    };
-
-    const mymap = L.map("mapid", mapOptions);
-    new L.TileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(mymap);
-
-    return mymap;
-  }
-
   createLegend(map) {
-    const legend = L.control({ position: 'bottomright' });
+    const legend = L.control({ position: "bottomright" });
     this.legendDiv = createEl("div", "info legend");
 
     legend.onAdd = () => {
       this.updateLegend();
-
-
       return this.legendDiv;
     };
     legend.addTo(map);
@@ -162,10 +162,9 @@ export class DashboardMap {
 
     // loop through our density intervals and generate a label with a colored square for each interval
     this.legendDiv.innerHTML = "";
-    for (let i = 0; i < grades.length; i++) {
-      this.legendDiv.innerHTML +=
-        '<i style="background:' + colors[i] + '"></i> ' +
-        grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+    for (let i = 0; i < grades.length; i += 1) {
+      this.legendDiv.innerHTML += `<i style="background:${colors[i]}"></i> ${grades[i]}`
+        .concat(`${grades[i + 1] ? "&ndash;".concat(grades[i + 1]).concat("<br>") : "+"}`);
     }
   }
 
@@ -188,7 +187,7 @@ export class DashboardMap {
 
     const cpd = datalinked.getcontrolPanelDataText();
     const currentParam = getDataSortFunc(cpd)[1];
-    const inIsPercent = datalinked.shouldGetInfoInPercentes(cpd);
+    const inIsPercent = shouldGetInfoInPercentes(cpd);
     let currentValue;
     if (inIsPercent) {
       currentValue = (country[currentParam] / country.population) * 100000;
@@ -210,8 +209,9 @@ export class DashboardMap {
         } else {
           currentValue = countryObj[currentParam];
         }
-        el = updateMarker(el, currentValue, inIsPercent);
+        return updateMarker(el, currentValue, inIsPercent);
       }
+      return null;
     });
   }
 }

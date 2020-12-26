@@ -53,6 +53,10 @@ export function getDataSortFunc(currentControlPanelDataText, elA, elB) {
   return null;
 }
 
+export function shouldGetInfoInPercentes(mode) {
+  return mode.indexOf("Per") > -1;
+}
+
 export class DataLinked {
   constructor() {
     this.countryListButtons = [];
@@ -159,11 +163,6 @@ export class DataLinked {
     return null;
   }
 
-  shouldGetInfoInPercentes(mode) {
-    return mode.indexOf("Per") > -1;
-  }
-
-
   updateTableDataButton(el = null, mode) {
     if (!el) {
       const curCountry = this.getCountryByName(this.getNameFromTable());
@@ -184,7 +183,7 @@ export class DataLinked {
         death: el.todayDeath,
       };
 
-    if (this.shouldGetInfoInPercentes(mode)) {
+    if (shouldGetInfoInPercentes(mode)) {
       console.log("делим");
       console.log(el);
       tableData.confirmed = (tableData.confirmed / el.population) * 100000;
@@ -375,7 +374,7 @@ export class DataLinked {
   }
 
   updateMapMarkers(cpd) {
-    const itIsPercent = this.shouldGetInfoInPercentes(cpd);
+    const itIsPercent = shouldGetInfoInPercentes(cpd);
     this.map.updateAllMarkers(cpd, itIsPercent);
     this.map.updateLegend(itIsPercent);
   }
