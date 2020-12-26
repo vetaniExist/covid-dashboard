@@ -17,11 +17,11 @@ export function getDataSortFunc(currentControlPanelDataText, elA, elB) {
     }
     case "totalDeathPer100": {
       return elA ? [(elB.totalDeath / elB.population) * 100000
-        - (elA.totalDeath / elA.population) * 100000, "cases", "totalDeath"] : ["cases", "totalDeath"];
+        - (elA.totalDeath / elA.population) * 100000, "cases", "totalDeath"] : ["deaths", "totalDeath"];
     }
     case "totalRecoveredPer100": {
       return elA ? [(elB.totalRecovered / elB.population) * 100000
-        - (elA.totalRecovered / elA.population) * 100000, "cases", "totalRecovered"] : ["cases", "totalRecovered"];
+        - (elA.totalRecovered / elA.population) * 100000, "cases", "totalRecovered"] : ["revoc", "totalRecovered"];
     }
 
     case "todayCases": {
@@ -31,7 +31,7 @@ export function getDataSortFunc(currentControlPanelDataText, elA, elB) {
       return elA ? [elB.todayDeath - elA.todayDeath, "deaths", "todayDeath"] : ["deaths", "todayDeath"];
     }
     case "todayRecovered": {
-      return elA ? [elB.todayRecovered - elA.todayRecovered, "cases", "todayRecovered"] : ["cases", "todayRecovered"];
+      return elA ? [elB.todayRecovered - elA.todayRecovered, "cases", "todayRecovered"] : ["revoc", "todayRecovered"];
     }
     case "todayCasesPer100": {
       return elA ? [(elB.todayConfirmed / elB.population) * 100000
@@ -39,11 +39,11 @@ export function getDataSortFunc(currentControlPanelDataText, elA, elB) {
     }
     case "todayDeathPer100": {
       return elA ? [(elB.todayDeath / elB.population) * 100000
-        - (elA.todayDeath / elA.population) * 100000, "cases", "todayDeath"] : ["cases", "todayDeath"];
+        - (elA.todayDeath / elA.population) * 100000, "cases", "todayDeath"] : ["deaths", "todayDeath"];
     }
     case "todayRecoveredPer100": {
       return elA ? [(elB.todayRecovered / elB.population) * 100000
-        - (elA.todayRecovered / elA.population) * 100000, "cases", "todayRecovered"] : ["cases", "todayRecovered"];
+        - (elA.todayRecovered / elA.population) * 100000, "cases", "todayRecovered"] : ["revoc", "todayRecovered"];
     }
 
     default: {
@@ -55,6 +55,10 @@ export function getDataSortFunc(currentControlPanelDataText, elA, elB) {
 
 export function shouldGetInfoInPercentes(mode) {
   return mode.indexOf("Per") > -1;
+}
+
+export function itIsTodayData(mode) {
+  return mode.indexOf("today") > -1;
 }
 
 export class DataLinked {
@@ -287,12 +291,14 @@ export class DataLinked {
         this.updateTableDataButton(null, this.currenMode[newModeIndex]);
         this.filterButtonsUsingCountryName(this.filter);
         this.updateMapMarkers(this.currenMode[newModeIndex]);
+        this.updateChart(this.currenMode[newModeIndex]);
       } else {
         this.setcontrolPanelDataText(this.currenMode[curModeIndex - 1]);
         this.updateCountryListButtons(this.currenMode[curModeIndex - 1]);
         this.updateTableDataButton(null, this.currenMode[curModeIndex - 1]);
         this.filterButtonsUsingCountryName(this.filter);
         this.updateMapMarkers(this.currenMode[curModeIndex - 1]);
+        this.updateChart(this.currenMode[curModeIndex - 1]);
       }
     });
   }
@@ -306,12 +312,14 @@ export class DataLinked {
         this.updateTableDataButton(null, this.currenMode[0]);
         this.filterButtonsUsingCountryName(this.filter);
         this.updateMapMarkers(this.currenMode[0]);
+        this.updateChart(this.currenMode[0]);
       } else {
         this.setcontrolPanelDataText(this.currenMode[curModeIndex + 1]);
         this.updateCountryListButtons(this.currenMode[curModeIndex + 1]);
         this.updateTableDataButton(null, this.currenMode[curModeIndex + 1]);
         this.filterButtonsUsingCountryName(this.filter);
         this.updateMapMarkers(this.currenMode[curModeIndex + 1]);
+        this.updateChart(this.currenMode[curModeIndex + 1]);
       }
     });
   }
@@ -327,6 +335,7 @@ export class DataLinked {
         this.updateTableDataButton(null, this.currenMode[curModeIndex]);
         this.filterButtonsUsingCountryName(this.filter);
         this.updateMapMarkers(this.currenMode[curModeIndex]);
+        this.updateChart(this.currenMode[curModeIndex]);
       }
     });
   }
@@ -342,6 +351,7 @@ export class DataLinked {
         this.updateTableDataButton(null, this.currenMode[curModeIndex]);
         this.filterButtonsUsingCountryName(this.filter);
         this.updateMapMarkers(this.currenMode[curModeIndex]);
+        this.updateChart(this.currenMode[curModeIndex]);
       }
     });
   }
@@ -377,6 +387,16 @@ export class DataLinked {
     const itIsPercent = shouldGetInfoInPercentes(cpd);
     this.map.updateAllMarkers(cpd, itIsPercent);
     this.map.updateLegend(itIsPercent);
+  }
+
+  setChart(chartObj) {
+    this.chart = chartObj;
+  }
+
+  updateChart(cpd) {
+    const name = this.getNameFromTable();
+    const countryObj = this.getCountryByName(name);
+    this.chart.updateChart(cpd, name, countryObj);
   }
 }
 
