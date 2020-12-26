@@ -81,7 +81,6 @@ export class DataLinked {
     this.setTextCases(worldTotalCases);
 
     this.listOfCountries = await data.getAllCountries();
-    // console.log(this.listOfCountries);
     this.loadFlags(this.listOfCountries);
     this.listOfCountries.push(worldCountry);
 
@@ -106,7 +105,6 @@ export class DataLinked {
         flag.classList.add("flag_img");
         flag.src = el.flag;
         flag.loading = "lazy";
-        /*    console.log(flag); */
         countryButton.appendChild(flag);
       }
 
@@ -189,8 +187,6 @@ export class DataLinked {
       };
 
     if (shouldGetInfoInPercentes(mode)) {
-      console.log("делим");
-      console.log(el);
       tableData.confirmed = (tableData.confirmed / el.population) * 100000;
       tableData.recovered = (tableData.recovered / el.population) * 100000;
       tableData.death = (tableData.recovered / el.population) * 100000;
@@ -207,7 +203,6 @@ export class DataLinked {
   }
 
   countryButtonClick(el, sortConfig, mode) {
-    console.log(el.name);
     this.setGlobalCasesTitle(el.name.concat(" ").concat(sortConfig[1]));
     this.setTextCases(el.getTotalCases());
     this.updateTableDataButton(el, mode);
@@ -279,81 +274,68 @@ export class DataLinked {
       countryButton.addEventListener("click", () => {
         this.countryButtonClick(el, sortConfig, mode);
         this.updateChart(mode);
-      }); 
+      });
     });
+  }
+
+  toogleLeftRightArrow(index) {
+    this.setcontrolPanelDataText(this.currenMode[index]);
+    this.updateCountryListButtons(this.currenMode[index]);
+    this.updateTableDataButton(null, this.currenMode[index]);
+    this.filterButtonsUsingCountryName(this.filter);
+    this.updateMapMarkers(this.currenMode[index]);
+    this.updateChart(this.currenMode[index]);
+  }
+
+  activateArrow(correctCondition, valTrueCondition, valFalseCondition) {
+    const curModeIndex = this.currenMode.indexOf(this.getcontrolPanelDataText());
+    if (curModeIndex === correctCondition) {
+      this.toogleLeftRightArrow(valTrueCondition);
+    } else {
+      this.toogleLeftRightArrow(curModeIndex + valFalseCondition);
+    }
   }
 
   activateLeftArrowClick() {
     this.lArrow.addEventListener("click", () => {
-      const curModeIndex = this.currenMode.indexOf(this.getcontrolPanelDataText());
-      if (curModeIndex === 0) {
-        const newModeIndex = this.currenMode.length - 1;
-        this.setcontrolPanelDataText(this.currenMode[newModeIndex]);
-        this.updateCountryListButtons(this.currenMode[newModeIndex]);
-        this.updateTableDataButton(null, this.currenMode[newModeIndex]);
-        this.filterButtonsUsingCountryName(this.filter);
-        this.updateMapMarkers(this.currenMode[newModeIndex]);
-        this.updateChart(this.currenMode[newModeIndex]);
-      } else {
-        this.setcontrolPanelDataText(this.currenMode[curModeIndex - 1]);
-        this.updateCountryListButtons(this.currenMode[curModeIndex - 1]);
-        this.updateTableDataButton(null, this.currenMode[curModeIndex - 1]);
-        this.filterButtonsUsingCountryName(this.filter);
-        this.updateMapMarkers(this.currenMode[curModeIndex - 1]);
-        this.updateChart(this.currenMode[curModeIndex - 1]);
-      }
+      this.activateArrow(0, this.currenMode.length - 1, -1);
     });
   }
 
   activateRightArrowClick() {
     this.rArrow.addEventListener("click", () => {
-      const curModeIndex = this.currenMode.indexOf(this.getcontrolPanelDataText());
-      if (curModeIndex === this.currenMode.length - 1) {
-        this.setcontrolPanelDataText(this.currenMode[0]);
-        this.updateCountryListButtons(this.currenMode[0]);
-        this.updateTableDataButton(null, this.currenMode[0]);
-        this.filterButtonsUsingCountryName(this.filter);
-        this.updateMapMarkers(this.currenMode[0]);
-        this.updateChart(this.currenMode[0]);
-      } else {
-        this.setcontrolPanelDataText(this.currenMode[curModeIndex + 1]);
-        this.updateCountryListButtons(this.currenMode[curModeIndex + 1]);
-        this.updateTableDataButton(null, this.currenMode[curModeIndex + 1]);
-        this.filterButtonsUsingCountryName(this.filter);
-        this.updateMapMarkers(this.currenMode[curModeIndex + 1]);
-        this.updateChart(this.currenMode[curModeIndex + 1]);
-      }
+      this.activateArrow(this.currenMode.length - 1, 0, 1);
     });
+  }
+
+  toogleTotalTodayButtons() {
+    const curModeIndex = this.currenMode.indexOf(this.getcontrolPanelDataText());
+    if (this.currenMode !== this.dataTypesArrayTotal) {
+      this.currenMode = this.dataTypesArrayTotal;
+    } else {
+      this.currenMode = this.dataTypesArrayToday;
+    }
+
+    this.setcontrolPanelDataText(this.currenMode[curModeIndex]);
+    this.updateCountryListButtons(this.currenMode[curModeIndex]);
+    this.updateTableDataButton(null, this.currenMode[curModeIndex]);
+    this.filterButtonsUsingCountryName(this.filter);
+    this.updateMapMarkers(this.currenMode[curModeIndex]);
+    this.updateChart(this.currenMode[curModeIndex]);
   }
 
   activateTotalButton() {
     this.totalBtn.addEventListener("click", () => {
-      console.log("totalButton");
-      const curModeIndex = this.currenMode.indexOf(this.getcontrolPanelDataText());
       if (this.currenMode !== this.dataTypesArrayTotal) {
-        this.currenMode = this.dataTypesArrayTotal;
-        this.setcontrolPanelDataText(this.currenMode[curModeIndex]);
-        this.updateCountryListButtons(this.currenMode[curModeIndex]);
-        this.updateTableDataButton(null, this.currenMode[curModeIndex]);
-        this.filterButtonsUsingCountryName(this.filter);
-        this.updateMapMarkers(this.currenMode[curModeIndex]);
-        this.updateChart(this.currenMode[curModeIndex]);
+        this.toogleTotalTodayButtons();
       }
     });
   }
 
   activateTodayButton() {
     this.todayBtn.addEventListener("click", () => {
-      console.log("todayButton");
-      const curModeIndex = this.currenMode.indexOf(this.getcontrolPanelDataText());
       if (this.currenMode !== this.dataTypesArrayToday) {
-        this.currenMode = this.dataTypesArrayToday;
-        this.setcontrolPanelDataText(this.currenMode[curModeIndex]);
-        this.updateCountryListButtons(this.currenMode[curModeIndex]);
-        this.updateTableDataButton(null, this.currenMode[curModeIndex]);
-        this.filterButtonsUsingCountryName(this.filter);
-        this.updateMapMarkers(this.currenMode[curModeIndex]);
-        this.updateChart(this.currenMode[curModeIndex]);
+        this.toogleTotalTodayButtons();
       }
     });
   }
@@ -364,14 +346,10 @@ export class DataLinked {
       const curSubString = el.name.substring(0, name.length);
       return name === curSubString;
     });
-    /* console.log("Отфильтровали страны");
-    console.log(filteredCountrieNames); */
 
     const filteredButtons = this.countryListButtons.filter((el) => filteredCountrieNames
       .filter((el2) => el.textContent.indexOf(el2.name) > -1).length > 0);
 
-    /* console.log("Отфильтровали кнопки");
-    console.log(filteredButtons); */
     this.countryListButtons.forEach((el) => {
       if (!filteredButtons.includes(el)) {
         el.classList.add("display-none");
