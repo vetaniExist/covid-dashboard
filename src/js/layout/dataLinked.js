@@ -115,6 +115,7 @@ export class DataLinked {
 
       countryButton.addEventListener("click", () => {
         this.countryButtonClick(el, sortConfig, this.currenMode[0]);
+        this.updateChart(this.currenMode[0]);
       });
     });
 
@@ -277,8 +278,8 @@ export class DataLinked {
       this.countryListButtons.push(countryButton);
       countryButton.addEventListener("click", () => {
         this.countryButtonClick(el, sortConfig, mode);
-      });
-      // this.updateChart(this.currenMode[curModeIndex - 1]);
+        this.updateChart(mode);
+      }); 
     });
   }
 
