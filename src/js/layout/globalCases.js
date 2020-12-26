@@ -2,7 +2,6 @@ import { createElement as createEl } from "../utils/elementsUtils";
 
 export class GlobalCases {
   constructor(parentNode, dataLink) {
-    console.log("GlobalCases not impl");
     this.globalCases = createEl("div", "covid_global-cases", parentNode);
     this.construnctDiv(dataLink);
   }

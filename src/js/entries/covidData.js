@@ -14,14 +14,14 @@ export class CovidData {
 
   async parseData() {
     await getCountries().then(async (data) => {
-      console.log("заполняем данные");
       this.worldData = data.Global;
       this.worldCountry = createWorldCountry(this.worldData);
-      console.log(this.worldData);
+
       let flags;
       await getPopulationAndFlag().then((data2) => {
         flags = data2;
       });
+
       this.countries = data.Countries.map((el) => {
         const curFlag = flags.find((flag) => flag.name === el.Country);
         if (curFlag) {
@@ -32,13 +32,12 @@ export class CovidData {
         }
         return new Country(el);
       });
-      console.log("вот тут");
     });
   }
 
   async getAllCountries() {
     if (this.countries) {
-      console.log("Возвращаем");
+      console.log("Возвращаем getAllCountries");
       return this.countries;
     }
     console.log("Ждем выполнение getAllCountries");

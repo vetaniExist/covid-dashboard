@@ -62,8 +62,6 @@ export class DashboardGraph {
     const currentCountryName = datalink.getNameFromTable();
 
     const timeline = await getTimeline(currentCountryName);
-    console.log("timeline");
-    console.log(timeline);
     const data = timeline[getTimelineParam(datalink.getcontrolPanelDataText())];
 
     const dates = Object.keys(data);

@@ -25,7 +25,6 @@ export async function getTimelineForCountry(country = "all") {
   } catch (err) {
     return null;
   }
-
 }
 
 export default getCountries;

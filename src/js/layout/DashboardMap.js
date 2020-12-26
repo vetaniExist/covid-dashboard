@@ -9,11 +9,7 @@ import { getDataSortFunc, shouldGetInfoInPercentes } from "./dataLinked";
 
 /* eslint-disable no-param-reassign */
 function updateMarker(marker, value, isPercent) {
-  // 100000
-  //          18650454
-  //          1362564
   if ((value > 250000 && !isPercent) || (value > 2.5 && isPercent)) {
-    // console.log("find black");
     marker.options.color = "black";
     marker.setRadius(9.0);
     return marker;
@@ -31,7 +27,6 @@ function updateMarker(marker, value, isPercent) {
   if ((value > 5000 && !isPercent) || (value > 0.05 && isPercent)) {
     marker.options.color = "red";
     marker.setRadius(3.0);
-    // console.log(marker);
     return marker;
   }
 
@@ -57,7 +52,6 @@ function createMap() {
 
 export class DashboardMap {
   constructor(parentNode, datalinked) {
-    console.log("MapLayout not impl");
     this.map = createEl("div", "covid_map", parentNode);
     this.markers = [];
     this.constructMap(datalinked);
@@ -69,15 +63,11 @@ export class DashboardMap {
     await this.leafletMapContainer.setAttribute("id", "mapid");
     this.countries = await this.data.getAllCountries();
 
-    console.log("страны");
-    console.log(this.countries);
-
     const mymap = createMap();
     this.createLegend(mymap);
 
     const geoJSON = await getGeoJSON();
 
-    let counter = 0;
     geoJSON.features.forEach((country) => {
       if (country.geometry.type === "Polygon") {
         country.geometry.coordinates.forEach((polygon) => {
@@ -114,9 +104,6 @@ export class DashboardMap {
         const rule3 = false || (country.properties.formal_en && country.properties.formal_en.indexOf(el.name) > -1);
         return rule1 || rule2 || rule3;
       })[0];
-      if (countryObj) {
-        counter += 1;
-      }
 
       const polygon = L.polygon(country.geometry.coordinates, country.properties).addTo(mymap);
       const center = polygon.getBounds().getCenter();
@@ -129,7 +116,6 @@ export class DashboardMap {
       });
 
       polygon.on("mouseover", () => {
-        // console.log(countryObj.name);
         // console.log(e.latlng)
         // console.log(center);
         L.popup().setLatLng(center)
@@ -137,8 +123,6 @@ export class DashboardMap {
           .openOn(mymap);
       });
     });
-    console.log("Насчитали столько стран: ", counter);
-    console.log(geoJSON.features.length);
   }
 
   createLegend(map) {
@@ -157,7 +141,6 @@ export class DashboardMap {
     const colors = ["black", "darkgreen", "purple", "red"];
     if (inIsPercent) {
       grades = grades.map((el) => el / 100000);
-      console.log(grades);
     }
 
     // loop through our density intervals and generate a label with a colored square for each interval
