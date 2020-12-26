@@ -1,133 +1,103 @@
+import Chart from "chart.js";
+
 import { createElement as createEl } from "../utils/elementsUtils";
 
 import { getTimelineForCountry } from "../utils/covidAPIUtils";
 import { getDataSortFunc, shouldGetInfoInPercentes, itIsTodayData } from "./dataLinked";
 
-import Chart from 'chart.js';
+async function getTimeline(currentCountryName) {
+  let timeline;
+  if (currentCountryName !== "World") {
+    timeline = await getTimelineForCountry(currentCountryName);
+    return timeline;
+  }
+  timeline = await getTimelineForCountry();
+  return timeline;
+}
+
+function getTimelineParam(cpd) {
+  const currentParam = getDataSortFunc(cpd)[0];
+  if (currentParam.toLowerCase().indexOf("cases") > -1) {
+    return "cases";
+  }
+  if (currentParam.toLowerCase().indexOf("death") > -1) {
+    return "deaths";
+  }
+  if (currentParam.toLowerCase().indexOf("revoc") > -1) {
+    return "recovered";
+  }
+  return null;
+}
+
+function itIsPercentFilter(data, cpd, country) {
+  const inIsPercent = shouldGetInfoInPercentes(cpd);
+  if (inIsPercent) {
+    return data.map((el) => (el / country.population) * 100000);
+  }
+  return data;
+}
+
+function itIsTodayFilter(date, cpd) {
+  const dateCopy = date.slice(0);
+  if (itIsTodayData(getDataSortFunc(cpd)[1])) {
+    const newDate = date.map((el, idx) => {
+      if (idx !== 0) {
+        return el - dateCopy[idx - 1];
+      }
+      return el;
+    });
+    return newDate;
+  }
+  return dateCopy;
+}
 
 export class DashboardGraph {
   constructor(parentNode, datalink) {
-    console.log("Dashboard Graph not impl");
     this.graph = createEl("div", "covid_graph", parentNode);
     this.createChart(datalink);
     datalink.setChart(this);
   }
 
   async createChart(datalink) {
-    console.log("createChart");
     const currentCountryName = datalink.getNameFromTable();
-    console.log(currentCountryName);
 
-    let timeline = await this.getTimeline(currentCountryName);
-    console.log("таймлайн");
-    console.log(timeline);
-
-    const data = timeline[this.getTimelineParam(datalink.getcontrolPanelDataText())];
-
-    console.log("data");
-    console.log(data);
-
+    const timeline = await getTimeline(currentCountryName);
+    const data = timeline[getTimelineParam(datalink.getcontrolPanelDataText())];
 
     const dates = Object.keys(data);
     const values = Object.values(data);
 
-
-    console.log("даты")
-    console.log(dates);
-
-    console.log("значения")
-    console.log(values);
-
     const canvas = createEl("canvas", "", this.graph);
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
 
     const chartOptions = {
-      type: 'line',
+      type: "line",
       data: {
         labels: dates,
         datasets: [
           {
             label: "TotalCases ".concat(currentCountryName),
             backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"],
-            data: values
-          }
-        ]
-      }
+            data: values,
+          },
+        ],
+      },
     };
 
     this.chart = new Chart(ctx, chartOptions);
   }
 
   async updateChart(cpd, currentCountryName, countryObj) {
-    let timeline = await this.getTimeline(currentCountryName);
-    const param = this.getTimelineParam(cpd);
-    console.log("параметр ", param);
+    const timeline = await getTimeline(currentCountryName);
+    const param = getTimelineParam(cpd);
     const data = timeline[param];
-    console.log(data);
 
-    let values = this.itIsTodayFilter(Object.values(data), cpd);
-    values = this.itIsPercentFilter(values, cpd, countryObj);
+    let values = itIsTodayFilter(Object.values(data), cpd);
+    values = itIsPercentFilter(values, cpd, countryObj);
 
     this.chart.config.data.datasets[0].label = cpd;
     this.chart.config.data.datasets[0].data = values;
     this.chart.update();
-  }
-
-  itIsTodayFilter(date, cpd) {
-    const dateCopy = date.slice(0);
-    console.log("копия");
-    console.log(dateCopy);
-    if (itIsTodayData(getDataSortFunc(cpd)[1])) {
-      const newDate = date.map((el, idx) => {
-        console.log("index", idx)
-        if (idx !== 0) {
-          return el - dateCopy[idx - 1];
-        }
-        return el;
-      })
-      return newDate;
-    }
-    return dateCopy;
-  }
-
-  itIsPercentFilter(data, cpd, country) {
-    const inIsPercent = shouldGetInfoInPercentes(cpd);
-    if (inIsPercent) {
-      return data.map((el) => (el / country.population) * 100000);
-    } 
-    return data;
-  }
-
-  async getTimeline(currentCountryName) {
-    console.log("getTimeline");
-    console.log(currentCountryName);
-    let timeline;
-    if (currentCountryName !== "World") {
-      timeline = await getTimelineForCountry(currentCountryName);
-      console.log(timeline);
-      return timeline;
-    } else {
-      timeline = await getTimelineForCountry();
-      console.log(timeline);
-      return timeline;
-    }
-
-  }
-
-  getTimelineParam(cpd) {
-    const currentParam = getDataSortFunc(cpd)[0];
-    console.log("getTimelineParam");
-    console.log(currentParam);
-    if (currentParam.toLowerCase().indexOf("cases") > -1) {
-      console.log("возвращаем cases");
-      return "cases";
-    }
-    if (currentParam.toLowerCase().indexOf("death") > -1) {
-      return "deaths";
-    }
-    if (currentParam.toLowerCase().indexOf("revoc") > -1) {
-      return "recovered";
-    }
   }
 }
 
