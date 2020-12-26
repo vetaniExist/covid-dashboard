@@ -17,7 +17,7 @@
 
 export async function getGeoJSON() {
   try {
-    const url = "./../../src/assets/geoData/countries.geojson";
+    const url = "https://raw.githubusercontent.com/vetaniExist/geojson/master/countries.geojson";
     const response = await fetch(url, {
       method: "GET",
     });
