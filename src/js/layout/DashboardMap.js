@@ -31,7 +31,7 @@ function updateMarker(marker, value, isPercent) {
   if ((value > 5000 && !isPercent) || (value > 0.05 && isPercent)) {
     marker.options.color = "red";
     marker.setRadius(3.0);
-    console.log(marker);
+    // console.log(marker);
     return marker;
   }
 

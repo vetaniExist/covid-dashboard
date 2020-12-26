@@ -19,4 +19,13 @@ export async function getPopulationAndFlag() {
   return getAsyncRequest("https://restcountries.eu/rest/v2/all?fields=name;population;flag");
 }
 
+export async function getTimelineForCountry(country = "all") {
+  try {
+    return getAsyncRequest(`https://disease.sh/v3/covid-19/historical/${country}?lastdays=366`);
+  } catch (err) {
+    return null;
+  }
+
+}
+
 export default getCountries;
