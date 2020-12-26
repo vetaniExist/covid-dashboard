@@ -1,53 +1,49 @@
 import { createElement as createEl, configurateButton } from "../utils/elementsUtils";
 
-function shouldGetInfoInPercentes(mode) {
-  return mode.indexOf("Per") > -1;
-}
-
-function getDataSortFunc(currentControlPanelDataText, elA, elB) {
+export function getDataSortFunc(currentControlPanelDataText, elA, elB) {
   switch (currentControlPanelDataText) {
     case "totalCases": {
-      return [elB.totalConfirmed - elA.totalConfirmed, "cases", "totalConfirmed"];
+      return elA ? [elB.totalConfirmed - elA.totalConfirmed, "cases", "totalConfirmed"] : ["cases", "totalConfirmed"];
     }
     case "totalDeaths": {
-      return [elB.totalDeath - elA.totalDeath, "deaths", "totalDeath"];
+      return elA ? [elB.totalDeath - elA.totalDeath, "deaths", "totalDeath"] : ["deaths", "totalDeath"];
     }
     case "totalRecovered": {
-      return [elB.totalRecovered - elA.totalRecovered, "revoc", "totalRecovered"];
+      return elA ? [elB.totalRecovered - elA.totalRecovered, "revoc", "totalRecovered"] : ["revoc", "totalRecovered"];
     }
     case "totalCasesPer100": {
-      return [(elB.totalConfirmed / elB.population) * 100000
-        - (elA.totalConfirmed / elA.population) * 100000, "cases", "totalConfirmed"];
+      return elA ? [(elB.totalConfirmed / elB.population) * 100000
+        - (elA.totalConfirmed / elA.population) * 100000, "cases", "totalConfirmed"] : ["cases", "totalConfirmed"];
     }
     case "totalDeathPer100": {
-      return [(elB.totalDeath / elB.population) * 100000
-        - (elA.totalDeath / elA.population) * 100000, "cases", "totalDeath"];
+      return elA ? [(elB.totalDeath / elB.population) * 100000
+        - (elA.totalDeath / elA.population) * 100000, "cases", "totalDeath"] : ["cases", "totalDeath"];
     }
     case "totalRecoveredPer100": {
-      return [(elB.totalRecovered / elB.population) * 100000
-        - (elA.totalRecovered / elA.population) * 100000, "cases", "totalRecovered"];
+      return elA ? [(elB.totalRecovered / elB.population) * 100000
+        - (elA.totalRecovered / elA.population) * 100000, "cases", "totalRecovered"] : ["cases", "totalRecovered"];
     }
 
     case "todayCases": {
-      return [elB.todayConfirmed - elA.todayConfirmed, "cases", "todayConfirmed"];
+      return elA ? [elB.todayConfirmed - elA.todayConfirmed, "cases", "todayConfirmed"] : ["cases", "todayConfirmed"];
     }
     case "todayDeaths": {
-      return [elB.todayDeath - elA.todayDeath, "deaths", "todayDeath"];
+      return elA ? [elB.todayDeath - elA.todayDeath, "deaths", "todayDeath"] : ["deaths", "todayDeath"];
     }
     case "todayRecovered": {
-      return [elB.todayRecovered - elA.todayRecovered, "cases", "todayRecovered"];
+      return elA ? [elB.todayRecovered - elA.todayRecovered, "cases", "todayRecovered"] : ["cases", "todayRecovered"];
     }
     case "todayCasesPer100": {
-      return [(elB.todayConfirmed / elB.population) * 100000
-        - (elA.todayConfirmed / elA.population) * 100000, "cases", "todayConfirmed"];
+      return elA ? [(elB.todayConfirmed / elB.population) * 100000
+        - (elA.todayConfirmed / elA.population) * 100000, "cases", "todayConfirmed"] : ["cases", "todayConfirmed"];
     }
     case "todayDeathPer100": {
-      return [(elB.todayDeath / elB.population) * 100000
-        - (elA.todayDeath / elA.population) * 100000, "cases", "todayDeath"];
+      return elA ? [(elB.todayDeath / elB.population) * 100000
+        - (elA.todayDeath / elA.population) * 100000, "cases", "todayDeath"] : ["cases", "todayDeath"];
     }
     case "todayRecoveredPer100": {
-      return [(elB.todayRecovered / elB.population) * 100000
-        - (elA.todayRecovered / elA.population) * 100000, "cases", "todayRecovered"];
+      return elA ? [(elB.todayRecovered / elB.population) * 100000
+        - (elA.todayRecovered / elA.population) * 100000, "cases", "todayRecovered"] : ["cases", "todayRecovered"];
     }
 
     default: {
@@ -77,7 +73,7 @@ export class DataLinked {
     this.setTextCases(worldTotalCases);
 
     this.listOfCountries = await data.getAllCountries();
-    console.log(this.listOfCountries);
+    // console.log(this.listOfCountries);
     this.loadFlags(this.listOfCountries);
     this.listOfCountries.push(worldCountry);
 
@@ -102,7 +98,7 @@ export class DataLinked {
         flag.classList.add("flag_img");
         flag.src = el.flag;
         flag.loading = "lazy";
-        console.log(flag);
+        /*    console.log(flag); */
         countryButton.appendChild(flag);
       }
 
@@ -163,6 +159,11 @@ export class DataLinked {
     return null;
   }
 
+  shouldGetInfoInPercentes(mode) {
+    return mode.indexOf("Per") > -1;
+  }
+
+
   updateTableDataButton(el = null, mode) {
     if (!el) {
       const curCountry = this.getCountryByName(this.getNameFromTable());
@@ -183,7 +184,7 @@ export class DataLinked {
         death: el.todayDeath,
       };
 
-    if (shouldGetInfoInPercentes(mode)) {
+    if (this.shouldGetInfoInPercentes(mode)) {
       console.log("делим");
       console.log(el);
       tableData.confirmed = (tableData.confirmed / el.population) * 100000;
@@ -286,11 +287,13 @@ export class DataLinked {
         this.updateCountryListButtons(this.currenMode[newModeIndex]);
         this.updateTableDataButton(null, this.currenMode[newModeIndex]);
         this.filterButtonsUsingCountryName(this.filter);
+        this.updateMapMarkers(this.currenMode[newModeIndex]);
       } else {
         this.setcontrolPanelDataText(this.currenMode[curModeIndex - 1]);
         this.updateCountryListButtons(this.currenMode[curModeIndex - 1]);
         this.updateTableDataButton(null, this.currenMode[curModeIndex - 1]);
         this.filterButtonsUsingCountryName(this.filter);
+        this.updateMapMarkers(this.currenMode[curModeIndex - 1]);
       }
     });
   }
@@ -303,11 +306,13 @@ export class DataLinked {
         this.updateCountryListButtons(this.currenMode[0]);
         this.updateTableDataButton(null, this.currenMode[0]);
         this.filterButtonsUsingCountryName(this.filter);
+        this.updateMapMarkers(this.currenMode[0]);
       } else {
         this.setcontrolPanelDataText(this.currenMode[curModeIndex + 1]);
         this.updateCountryListButtons(this.currenMode[curModeIndex + 1]);
         this.updateTableDataButton(null, this.currenMode[curModeIndex + 1]);
         this.filterButtonsUsingCountryName(this.filter);
+        this.updateMapMarkers(this.currenMode[curModeIndex + 1]);
       }
     });
   }
@@ -322,6 +327,7 @@ export class DataLinked {
         this.updateCountryListButtons(this.currenMode[curModeIndex]);
         this.updateTableDataButton(null, this.currenMode[curModeIndex]);
         this.filterButtonsUsingCountryName(this.filter);
+        this.updateMapMarkers(this.currenMode[curModeIndex]);
       }
     });
   }
@@ -336,6 +342,7 @@ export class DataLinked {
         this.updateCountryListButtons(this.currenMode[curModeIndex]);
         this.updateTableDataButton(null, this.currenMode[curModeIndex]);
         this.filterButtonsUsingCountryName(this.filter);
+        this.updateMapMarkers(this.currenMode[curModeIndex]);
       }
     });
   }
@@ -346,14 +353,14 @@ export class DataLinked {
       const curSubString = el.name.substring(0, name.length);
       return name === curSubString;
     });
-    console.log("Отфильтровали страны");
-    console.log(filteredCountrieNames);
+    /* console.log("Отфильтровали страны");
+    console.log(filteredCountrieNames); */
 
     const filteredButtons = this.countryListButtons.filter((el) => filteredCountrieNames
       .filter((el2) => el.textContent.indexOf(el2.name) > -1).length > 0);
 
-    console.log("Отфильтровали кнопки");
-    console.log(filteredButtons);
+    /* console.log("Отфильтровали кнопки");
+    console.log(filteredButtons); */
     this.countryListButtons.forEach((el) => {
       if (!filteredButtons.includes(el)) {
         el.classList.add("display-none");
@@ -361,6 +368,16 @@ export class DataLinked {
         el.classList.remove("display-none");
       }
     });
+  }
+
+  setMap(mapObj) {
+    this.map = mapObj;
+  }
+
+  updateMapMarkers(cpd) {
+    const itIsPercent = this.shouldGetInfoInPercentes(cpd);
+    this.map.updateAllMarkers(cpd, itIsPercent);
+    this.map.updateLegend(itIsPercent);
   }
 }
 
