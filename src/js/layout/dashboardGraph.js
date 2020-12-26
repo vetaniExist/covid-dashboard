@@ -9,7 +9,7 @@ async function getTimeline(currentCountryName) {
   let timeline;
   if (currentCountryName !== "World") {
     timeline = await getTimelineForCountry(currentCountryName);
-    return timeline;
+    return timeline.timeline;
   }
   timeline = await getTimelineForCountry();
   return timeline;
@@ -62,6 +62,8 @@ export class DashboardGraph {
     const currentCountryName = datalink.getNameFromTable();
 
     const timeline = await getTimeline(currentCountryName);
+    console.log("timeline");
+    console.log(timeline);
     const data = timeline[getTimelineParam(datalink.getcontrolPanelDataText())];
 
     const dates = Object.keys(data);
@@ -95,7 +97,7 @@ export class DashboardGraph {
     let values = itIsTodayFilter(Object.values(data), cpd);
     values = itIsPercentFilter(values, cpd, countryObj);
 
-    this.chart.config.data.datasets[0].label = cpd;
+    this.chart.config.data.datasets[0].label = cpd.concat(`(${currentCountryName})`);
     this.chart.config.data.datasets[0].data = values;
     this.chart.update();
   }

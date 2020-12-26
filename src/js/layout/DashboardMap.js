@@ -129,7 +129,7 @@ export class DashboardMap {
       });
 
       polygon.on("mouseover", () => {
-        console.log(countryObj.name);
+        // console.log(countryObj.name);
         // console.log(e.latlng)
         // console.log(center);
         L.popup().setLatLng(center)

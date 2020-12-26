@@ -278,6 +278,7 @@ export class DataLinked {
       countryButton.addEventListener("click", () => {
         this.countryButtonClick(el, sortConfig, mode);
       });
+      // this.updateChart(this.currenMode[curModeIndex - 1]);
     });
   }
 
@@ -396,7 +397,7 @@ export class DataLinked {
   updateChart(cpd) {
     const name = this.getNameFromTable();
     const countryObj = this.getCountryByName(name);
-    this.chart.updateChart(cpd, name, countryObj);
+    this.chart.updateChart(cpd, countryObj.name, countryObj);
   }
 }
 
