@@ -31,7 +31,7 @@ function updateMarker(marker, value, isPercent) {
   if ((value > 5000 && !isPercent) || (value > 0.05 && isPercent)) {
     marker.options.color = "red";
     marker.setRadius(3.0);
-    console.log(marker);
+    // console.log(marker);
     return marker;
   }
 
@@ -129,7 +129,7 @@ export class DashboardMap {
       });
 
       polygon.on("mouseover", () => {
-        console.log(countryObj.name);
+        // console.log(countryObj.name);
         // console.log(e.latlng)
         // console.log(center);
         L.popup().setLatLng(center)
