@@ -374,8 +374,10 @@ export class DataLinked {
     this.map = mapObj;
   }
 
-  updateMapMarkers(cpd){
-    this.map.updateAllMarkers(cpd, this.shouldGetInfoInPercentes(cpd));
+  updateMapMarkers(cpd) {
+    const itIsPercent = this.shouldGetInfoInPercentes(cpd);
+    this.map.updateAllMarkers(cpd, itIsPercent);
+    this.map.updateLegend(itIsPercent);
   }
 }
 

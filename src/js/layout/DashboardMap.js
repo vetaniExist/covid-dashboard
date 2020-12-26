@@ -59,6 +59,7 @@ export class DashboardMap {
     console.log(this.countries);
 
     const mymap = this.createMap();
+    this.createLegend(mymap);
 
     const geoJSON = await getGeoJSON();
 
@@ -112,7 +113,7 @@ export class DashboardMap {
       });
 
       polygon.on("mouseover", () => {
-        // console.log(country.properties.name);
+        console.log(countryObj.name);
         // console.log(e.latlng)
         // console.log(center);
         L.popup().setLatLng(center)
@@ -136,6 +137,36 @@ export class DashboardMap {
     new L.TileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(mymap);
 
     return mymap;
+  }
+
+  createLegend(map) {
+    const legend = L.control({ position: 'bottomright' });
+    this.legendDiv = createEl("div", "info legend");
+
+    legend.onAdd = () => {
+      this.updateLegend();
+
+
+      return this.legendDiv;
+    };
+    legend.addTo(map);
+  }
+
+  updateLegend(inIsPercent) {
+    let grades = [250000, 100000, 10000, 5000, 0];
+    const colors = ["black", "darkgreen", "purple", "red"];
+    if (inIsPercent) {
+      grades = grades.map((el) => el / 100000);
+      console.log(grades);
+    }
+
+    // loop through our density intervals and generate a label with a colored square for each interval
+    this.legendDiv.innerHTML = "";
+    for (let i = 0; i < grades.length; i++) {
+      this.legendDiv.innerHTML +=
+        '<i style="background:' + colors[i] + '"></i> ' +
+        grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+    }
   }
 
   createMarker(country, center, datalinked) {
