@@ -418,19 +418,26 @@ export class DataLinked {
   }
 
   hide(obj) {
-    this.isOpen = !this.isOpen;
     this.tryHideBlock(obj, this.map);
     this.tryHideBlock(obj, this.table);
     this.tryHideBlock(obj, this.countryListDiv);
     this.tryHideBlock(obj, this.chart);
+    this.isOpen = !this.isOpen;
   }
 
   tryHideBlock(obj, blockObj) {
     if (obj !== blockObj) {
       if (!this.isOpen) {
-        blockObj.show();
-      } else {
         blockObj.hide();
+      } else {
+        blockObj.show();
+      }
+    } else {
+      console.log("тут");
+      if (!this.isOpen) {
+        blockObj.open();
+      } else {
+        blockObj.close();
       }
     }
   }

@@ -38,8 +38,8 @@ body {
 
 .table_graph-box {
   position: relative;
-  height: 80vh;
-  width: 30vw;
+  /*   height: 80vh;
+  width: 30vw; */
 }
 
 .covid_header {
@@ -50,9 +50,15 @@ body {
 
 .covid_table {
   position: relative;
-  width: 30vw;
+  width: inherit;
   height: 45vh;
   border: 1px solid red;
+}
+
+.covid_table-active {
+  width: 95vw;
+  height: 80vh;
+  background-color: green;
 }
 
 .covid_graph {
@@ -62,7 +68,7 @@ body {
   background-color: tan;
 }
 
-.chart_container{
+.chart_container {
   max-width: 465px;
 }
 
@@ -123,9 +129,10 @@ footer {
   max-width: 6vw;
 }
 
-.control_button-map{
+.control_button-map {
   max-width: 10vw;
 }
+
 .country_button {
   width: 20vw;
   height: 60px;
@@ -136,7 +143,8 @@ footer {
 }
 
 .covid_table-control_panel {
-  width: inherit;
+  width: inherit/* 29vw */
+  ;
   background-color: red;
   height: 10vh;
   justify-content: space-between;
@@ -155,7 +163,7 @@ footer {
 }
 
 .covid_table-control_panel-data {
-  width: 16vw
+  width: 16vw;
   background-color: purple;
   height: 5vh;
 }

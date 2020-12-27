@@ -29,6 +29,15 @@ export class GlobalCases {
   show() {
     this.globalCases.classList.remove("display-none");
   }
+
+  open() {
+   //  console.log("2424124");
+    // this.table.classList.add("covid_table-active");
+  }
+
+  close() {
+    // this.table.classList.remove("covid_table-active");
+  }
 }
 
 export default GlobalCases;

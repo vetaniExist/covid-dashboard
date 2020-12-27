@@ -60,12 +60,15 @@ export class DashboardMap {
   }
 
   async constructMap(datalinked) {
+    this.map.addEventListener("resize", () => {
+      console.log("e[qe");
+    });
     this.leafletMapContainer = createEl("div", "covid_map-container", this.map);
     await this.leafletMapContainer.setAttribute("id", "mapid");
     this.countries = await this.data.getAllCountries();
 
-    const mymap = createMap();
-    this.createLegend(mymap);
+    this.mymap = createMap();
+    this.createLegend(this.mymap);
 
     const geoJSON = await getGeoJSON();
 
@@ -106,14 +109,14 @@ export class DashboardMap {
         return rule1 || rule2 || rule3;
       })[0];
 
-      const polygon = L.polygon(country.geometry.coordinates, country.properties).addTo(mymap);
+      const polygon = L.polygon(country.geometry.coordinates, country.properties).addTo(this.mymap);
       const center = polygon.getBounds().getCenter();
       const marker = this.createMarker(countryObj, center, datalinked);
-      marker.addTo(mymap);
+      marker.addTo(this.mymap);
       this.markers.push(marker);
 
       polygon.on("mouseout", () => {
-        mymap.closePopup();
+        this.mymap.closePopup();
       });
 
       polygon.on("mouseover", () => {
@@ -121,7 +124,7 @@ export class DashboardMap {
         // console.log(center);
         L.popup().setLatLng(center)
           .setContent(`<p>${country.properties.name}<br/>${datalinked.getcontrolPanelDataText()}</p>`)
-          .openOn(mymap);
+          .openOn(this.mymap);
       });
     });
   }
@@ -228,6 +231,16 @@ export class DashboardMap {
 
   show() {
     this.map.classList.remove("display-none");
+  }
+
+  open() {
+    this.map.classList.add("covid_table-active");
+    this.mymap.invalidateSize() 
+  }
+
+  close() {
+    this.map.classList.remove("covid_table-active");
+    this.mymap.invalidateSize() 
   }
 }
 

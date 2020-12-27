@@ -41,6 +41,14 @@ export class DashboardTable {
   show() {
     this.table.classList.remove("display-none");
   }
+
+  open() {
+    this.table.classList.add("covid_table-active");
+  }
+
+  close() {
+    this.table.classList.remove("covid_table-active");
+  }
 }
 
 export default DashboardTable;
