@@ -134,6 +134,7 @@ export class DataLinked {
   }
 
   async configurateControlButtons() {
+    this.controlPanelDataClones = [];
     this.controlPanelData = createEl("div", "flex text covid_table-control_panel-data");
     this.setcontrolPanelDataText(this.currenMode[0]);
   }
@@ -234,6 +235,12 @@ export class DataLinked {
     return this.controlPanelData;
   }
 
+  getControlPanelDataClone() {
+    const clone = this.controlPanelData.cloneNode(true);
+    this.controlPanelDataClones.push(clone);
+    return clone;
+  }
+
   getTotalBtn() {
     const totalBtn = configurateButton("total", "");
     this.activateTotalButton(totalBtn);
@@ -248,6 +255,11 @@ export class DataLinked {
 
   setcontrolPanelDataText(newText) {
     this.controlPanelData.textContent = newText;
+    /* eslint-disable no-param-reassign */
+    this.controlPanelDataClones.forEach((el) => {
+      el.textContent = newText;
+    });
+    /* eslint-enable no-param-reassign */
   }
 
   getcontrolPanelDataText() {

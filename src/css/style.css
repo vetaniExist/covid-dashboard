@@ -132,6 +132,12 @@ footer {
   justify-content: space-between;
 }
 
+.covid_table-control_panel-map {
+  width: inherit;
+  height: 5vh;
+  background-color: red;
+}
+
 .covid_table-control_panel-buttons {
   width: inherit;
   background-color: red;
@@ -170,7 +176,7 @@ footer {
 }
 
 .countries_button_container {
-  height: 58vh;
+  height: 48vh;
   align-items: flex-start;
   margin-top: 0;
 }
@@ -235,4 +241,8 @@ footer {
   float: left;
   margin-right: 8px;
   opacity: 0.7;
+}
+
+.just_cont-center {
+  justify-content: center;
 }

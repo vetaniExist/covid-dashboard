@@ -16,6 +16,10 @@ export class CountryList {
 
   configurateControlButtons(dataLink) {
     this.controlsButtonsContainer = createEl("div", "covid_table-control_panel", this.parent);
+
+    this.controlPanelData = dataLink.getControlPanelDataClone();
+
+    this.controlsButtonsContainer.appendChild(this.controlPanelData);
     this.controlPanelButtons = createEl("div", "flex covid_table-control_panel-buttons", this.controlsButtonsContainer);
 
     this.lArrow = dataLink.getLArrow();
@@ -26,9 +30,6 @@ export class CountryList {
 
     this.todayBtn = dataLink.getTodayBtn();
     this.controlPanelButtons.appendChild(this.todayBtn);
-
-    /* this.tableDataButton = dataLink.getTableDataButton();
-    this.table.appendChild(this.tableDataButton); */
 
     this.rArrow = dataLink.getRArrow();
     this.controlPanelButtons.appendChild(this.rArrow);

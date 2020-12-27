@@ -56,6 +56,7 @@ export class DashboardMap {
     this.markers = [];
     this.constructMap(datalinked);
     this.data = new CData();
+    this.configurateControlButtons(datalinked);
   }
 
   async constructMap(datalinked) {
@@ -196,6 +197,26 @@ export class DashboardMap {
       }
       return null;
     });
+  }
+
+  configurateControlButtons(dataLink) {
+    this.controlsButtonsContainer = createEl("div", "flex just_cont-center covid_table-control_panel-map", this.map);
+
+    this.controlPanelData = dataLink.getControlPanelDataClone();
+
+    this.lArrow = dataLink.getLArrow();
+    this.controlsButtonsContainer.appendChild(this.lArrow);
+
+    this.totalBtn = dataLink.getTotalBtn();
+    this.controlsButtonsContainer.appendChild(this.totalBtn);
+
+    this.controlsButtonsContainer.appendChild(this.controlPanelData);
+
+    this.todayBtn = dataLink.getTodayBtn();
+    this.controlsButtonsContainer.appendChild(this.todayBtn);
+
+    this.rArrow = dataLink.getRArrow();
+    this.controlsButtonsContainer.appendChild(this.rArrow);
   }
 }
 
