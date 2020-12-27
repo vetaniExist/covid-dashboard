@@ -136,7 +136,8 @@ export class DataLinked {
 
   async configurateControlButtons() {
     this.controlPanelDataClones = [];
-    this.controlPanelData = createEl("div", "flex just_cont-center align_items-center text text-panel covid_table-control_panel-data");
+    this.controlPanelData = createEl("div",
+      "flex just_cont-center align_items-center text text-panel covid_table-control_panel-data");
     this.setcontrolPanelDataText(this.currenMode[0]);
   }
 

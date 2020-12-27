@@ -134,15 +134,14 @@ export class DashboardGraph {
   }
 
   open() {
-    //  console.log("2424124");
     this.graph.classList.add("covid_table-active");
     this.canvas.classList.remove("chart_container");
     this.graph.style.height = "80vh";
   }
 
   close() {
-    this.graph.style.height = "initial"
-    this.graph .classList.remove("covid_table-active");
+    this.graph.style.height = "initial";
+    this.graph.classList.remove("covid_table-active");
     this.canvas.classList.add("chart_container");
   }
 }

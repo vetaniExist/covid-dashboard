@@ -235,12 +235,12 @@ export class DashboardMap {
 
   open() {
     this.map.classList.add("covid_table-active");
-    this.mymap.invalidateSize() 
+    this.mymap.invalidateSize();
   }
 
   close() {
     this.map.classList.remove("covid_table-active");
-    this.mymap.invalidateSize() 
+    this.mymap.invalidateSize();
   }
 }
 

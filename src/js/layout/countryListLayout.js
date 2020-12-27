@@ -62,9 +62,6 @@ export class CountryList {
   }
 
   open(callbackActivateButtons) {
-    //  console.log("2424124");
-
-    console.log(this.countryList);
     this.parent.classList.add("covid_table-active");
     this.countryList.classList.add("covid_table-active");
     callbackActivateButtons();

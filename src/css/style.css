@@ -146,9 +146,7 @@ footer {
 }
 
 .covid_table-control_panel {
-  width: inherit/* 29vw */
-  ;
-  background-color: red;
+  width: inherit/* 29vw */;
   height: 10vh;
   justify-content: space-between;
 }
@@ -156,12 +154,10 @@ footer {
 .covid_table-control_panel-map {
   width: inherit;
   height: 5vh;
-  background-color: red;
 }
 
 .covid_table-control_panel-buttons {
   width: inherit;
-  background-color: red;
   height: 5vh;
 }
 
@@ -205,6 +201,8 @@ footer {
 .input_search-field {
   width: inherit;
   height: 2vh;
+  position: sticky;
+  top: 0;
 }
 
 .flag_img {
