@@ -435,11 +435,17 @@ export class DataLinked {
     } else {
       console.log("тут");
       if (!this.isOpen) {
-        blockObj.open();
+        blockObj.open(this.allButtonsActive.bind(this));
       } else {
         blockObj.close();
       }
     }
+  }
+
+  allButtonsActive() {
+    this.countryListButtons.forEach((el) => {
+      el.classList.add("country_button-active");
+    });
   }
 }
 

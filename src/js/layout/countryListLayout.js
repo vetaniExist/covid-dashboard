@@ -34,7 +34,7 @@ export class CountryList {
 
     this.rArrow = dataLink.getRArrow();
     this.controlPanelButtons.appendChild(this.rArrow);
-    
+
     this.hideButton = dataLink.getHideButton(this);
     this.controlPanelButtons.appendChild(this.hideButton);
   }
@@ -61,14 +61,19 @@ export class CountryList {
     this.parent.classList.remove("display-none");
   }
 
-  open() {
+  open(callbackActivateButtons) {
     //  console.log("2424124");
-     // this.table.classList.add("covid_table-active");
-   }
- 
-   close() {
-     // this.table.classList.remove("covid_table-active");
-   }
+
+    console.log(this.countryList);
+    this.parent.classList.add("covid_table-active");
+    this.countryList.classList.add("covid_table-active");
+    callbackActivateButtons();
+  }
+
+  close() {
+    this.parent.classList.remove("covid_table-active");
+    this.countryList.classList.remove("covid_table-active");
+  }
 }
 
 export default CountryList;

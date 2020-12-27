@@ -56,9 +56,13 @@ body {
 }
 
 .covid_table-active {
-  width: 95vw;
+  width: 95vw!important;
   height: 80vh;
   background-color: green;
+}
+
+.country_button-active {
+  width: 80vw!important;
 }
 
 .covid_graph {
