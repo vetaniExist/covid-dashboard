@@ -75,6 +75,11 @@ body {
   max-width: 465px;
 }
 
+.chart_container-new_limit {
+  max-width: 900px;
+  max-height: 330px;
+}
+
 .covid_global-cases {
   position: relative;
   height: 20vh;

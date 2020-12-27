@@ -135,14 +135,14 @@ export class DashboardGraph {
 
   open() {
     this.graph.classList.add("covid_table-active");
-    this.canvas.classList.remove("chart_container");
-    this.graph.style.height = "80vh";
+    this.canvas.classList.add("chart_container-new_limit");
+    // this.canvas.style.height = "60vh";
   }
 
   close() {
-    this.graph.style.height = "initial";
+    this.canvas.style.height = "initial";
     this.graph.classList.remove("covid_table-active");
-    this.canvas.classList.add("chart_container");
+    this.canvas.classList.remove("chart_container-new_limit");
   }
 }
 
