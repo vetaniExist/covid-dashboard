@@ -70,9 +70,10 @@ export class CountryList {
     callbackActivateButtons();
   }
 
-  close() {
+  close(callbackDisactivateButtons) {
     this.parent.classList.remove("covid_table-active");
     this.countryList.classList.remove("covid_table-active");
+    callbackDisactivateButtons();
   }
 }
 

@@ -437,7 +437,7 @@ export class DataLinked {
       if (!this.isOpen) {
         blockObj.open(this.allButtonsActive.bind(this));
       } else {
-        blockObj.close();
+        blockObj.close(this.allButtonsRemoveActive.bind(this));
       }
     }
   }
@@ -445,6 +445,12 @@ export class DataLinked {
   allButtonsActive() {
     this.countryListButtons.forEach((el) => {
       el.classList.add("country_button-active");
+    });
+  }
+
+  allButtonsRemoveActive() {
+    this.countryListButtons.forEach((el) => {
+      el.classList.remove("country_button-active");
     });
   }
 }
