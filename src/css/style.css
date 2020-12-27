@@ -52,7 +52,6 @@ body {
   position: relative;
   width: inherit;
   height: 45vh;
-  border: 1px solid red;
 }
 
 .covid_table-active {

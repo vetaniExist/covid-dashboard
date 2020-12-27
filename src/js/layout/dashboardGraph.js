@@ -67,8 +67,8 @@ export class DashboardGraph {
     const dates = Object.keys(data);
     const values = Object.values(data);
 
-    const canvas = createEl("canvas", "chart_container", this.graph);
-    const ctx = canvas.getContext("2d");
+    this.canvas = createEl("canvas", "chart_container", this.graph);
+    const ctx = this.canvas.getContext("2d");
 
     const chartOptions = {
       type: "line",
@@ -135,11 +135,15 @@ export class DashboardGraph {
 
   open() {
     //  console.log("2424124");
-    // this.table.classList.add("covid_table-active");
+    this.graph.classList.add("covid_table-active");
+    this.canvas.classList.remove("chart_container");
+    this.graph.style.height = "80vh";
   }
 
   close() {
-    // this.table.classList.remove("covid_table-active");
+    this.graph.style.height = "initial"
+    this.graph .classList.remove("covid_table-active");
+    this.canvas.classList.add("chart_container");
   }
 }
 
