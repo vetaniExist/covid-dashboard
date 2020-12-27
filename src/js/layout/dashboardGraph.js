@@ -67,8 +67,8 @@ export class DashboardGraph {
     const dates = Object.keys(data);
     const values = Object.values(data);
 
-    const canvas = createEl("canvas", "", this.graph);
-    const ctx = canvas.getContext("2d");
+    this.canvas = createEl("canvas", "chart_container", this.graph);
+    const ctx = this.canvas.getContext("2d");
 
     const chartOptions = {
       type: "line",
@@ -85,6 +85,7 @@ export class DashboardGraph {
     };
 
     this.chart = new Chart(ctx, chartOptions);
+    this.configurateControlButtons(datalink);
   }
 
   async updateChart(cpd, currentCountryName, countryObj) {
@@ -98,6 +99,50 @@ export class DashboardGraph {
     this.chart.config.data.datasets[0].label = cpd.concat(`(${currentCountryName})`);
     this.chart.config.data.datasets[0].data = values;
     this.chart.update();
+  }
+
+  configurateControlButtons(dataLink) {
+    this.controlPanel = createEl("div", "flex flex_wrap covid_table-control_panel", this.graph);
+
+    this.controlPanelData = dataLink.getControlPanelDataClone();
+    this.controlPanel.appendChild(this.controlPanelData);
+
+    this.controlPanelButtons = createEl("div", "flex covid_table-control_panel-buttons", this.controlPanel);
+
+    this.lArrow = dataLink.getLArrow();
+    this.controlPanelButtons.appendChild(this.lArrow);
+
+    this.totalBtn = dataLink.getTotalBtn();
+    this.controlPanelButtons.appendChild(this.totalBtn);
+
+    this.todayBtn = dataLink.getTodayBtn();
+    this.controlPanelButtons.appendChild(this.todayBtn);
+
+    this.rArrow = dataLink.getRArrow();
+    this.controlPanelButtons.appendChild(this.rArrow);
+
+    this.hideButton = dataLink.getHideButton(this);
+    this.controlPanelButtons.appendChild(this.hideButton);
+  }
+
+  hide() {
+    this.graph.classList.add("display-none");
+  }
+
+  show() {
+    this.graph.classList.remove("display-none");
+  }
+
+  open() {
+    this.graph.classList.add("covid_table-active");
+    this.canvas.classList.remove("chart_container");
+    this.graph.style.height = "80vh";
+  }
+
+  close() {
+    this.graph.style.height = "initial";
+    this.graph.classList.remove("covid_table-active");
+    this.canvas.classList.add("chart_container");
   }
 }
 

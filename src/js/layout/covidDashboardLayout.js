@@ -25,7 +25,7 @@ export class CovidDashboardLayout {
     this.body = document.body;
     this.wrap = createEl("div", "flex flex_wrap wrapper", this.body);
     this.dHeader = new DHeader(this.wrap);
-    this.mainContentBox = createEl("div", "flex covid_main-box", this.wrap);
+    this.mainContentBox = createEl("div", "flex just_cont-center covid_main-box", this.wrap);
     this.countryCasesBox = createEl("div", "flex flex_wrap country_cases-box", this.mainContentBox);
     // this.map = new DMap(this.mainContentBox, this.dataLink);
     this.dataLink.setMap(new DMap(this.mainContentBox, this.dataLink));

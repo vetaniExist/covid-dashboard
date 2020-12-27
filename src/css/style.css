@@ -7,7 +7,7 @@ body {
   position: relative;
   width: 100vw;
   height: 90vh;
-  background-color: red;
+  background-color: rgba(36, 39, 60, 0.7);
 }
 
 .flex {
@@ -22,14 +22,12 @@ body {
   position: relative;
   height: 80vh;
   width: 100vw;
-  background-color: yellow;
 }
 
 .country_cases-box {
   position: relative;
   height: 80vh;
   width: 20vw;
-  background-color: yellowgreen;
 }
 
 .covid_map {
@@ -40,23 +38,30 @@ body {
 
 .table_graph-box {
   position: relative;
-  height: 80vh;
-  width: 30vw;
-  background-color: firebrick;
+  /*   height: 80vh;
+  width: 30vw; */
 }
 
 .covid_header {
   position: relative;
   height: 10vh;
   width: 100vw;
-  background-color: purple;
 }
 
 .covid_table {
   position: relative;
-  width: 30vw;
+  width: inherit;
   height: 45vh;
+}
+
+.covid_table-active {
+  width: 95vw!important;
+  height: 80vh;
   background-color: green;
+}
+
+.country_button-active {
+  width: 80vw!important;
 }
 
 .covid_graph {
@@ -64,6 +69,10 @@ body {
   width: 30vw;
   height: 35vh;
   background-color: tan;
+}
+
+.chart_container {
+  max-width: 465px;
 }
 
 .covid_global-cases {
@@ -75,7 +84,7 @@ body {
 
 .covid_country_list {
   position: relative;
-  height: 60vh;
+  height: 50vh;
   width: 20vw;
   background-color: violet;
   overflow-x: hidden;
@@ -90,7 +99,7 @@ footer {
   position: relative;
   height: 10vh;
   width: 100vw;
-  background-color: forestgreen;
+  background-color: rgba(36, 39, 60, 0.7);
   justify-content: space-evenly;
   align-items: center;
 }
@@ -113,27 +122,49 @@ footer {
   font-size: 22px;
 }
 
+.text-panel {
+  font-size: 16px;
+}
+
+.basic_button {}
+
+.control_button {
+  max-width: 6vw;
+}
+
+.control_button-map {
+  max-width: 10vw;
+}
+
 .country_button {
   width: 20vw;
   height: 60px;
   font-size: 14px;
   font-family: 'Quicksand', sans-serif;
-  background: rgba(0, 0, 0, 0);
   color: black;
   border: 2px solid black;
 }
 
 .covid_table-control_panel {
-  width: inherit;
-  background-color: red;
-  height: 5vh;
+  width: inherit/* 29vw */;
+  height: 10vh;
   justify-content: space-between;
 }
 
+.covid_table-control_panel-map {
+  width: inherit;
+  height: 5vh;
+}
+
+.covid_table-control_panel-buttons {
+  width: inherit;
+  height: 5vh;
+}
+
 .covid_table-control_panel-data {
-  width: 15vw;
+  width: 16vw;
   background-color: purple;
-  height: inherit;
+  height: 5vh;
 }
 
 .lArrow {}
@@ -162,7 +193,7 @@ footer {
 }
 
 .countries_button_container {
-  height: 58vh;
+  height: 48vh;
   align-items: flex-start;
   margin-top: 0;
 }
@@ -170,6 +201,8 @@ footer {
 .input_search-field {
   width: inherit;
   height: 2vh;
+  position: sticky;
+  top: 0;
 }
 
 .flag_img {
@@ -193,14 +226,12 @@ footer {
   color: wheat;
 }
 
-.covid_map-container{
+.covid_map-container {}
 
-}
 #mapid {
   height: 75vh;
   width: inherit;
 }
-
 
 /* legend */
 
@@ -208,10 +239,11 @@ footer {
   padding: 6px 8px;
   font: 14px/16px Arial, Helvetica, sans-serif;
   background: white;
-  background: rgba(255,255,255,0.8);
-  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
   border-radius: 5px;
 }
+
 .info h4 {
   margin: 0 0 5px;
   color: #777;
@@ -221,10 +253,19 @@ footer {
   line-height: 18px;
   color: #555;
 }
+
 .legend i {
   width: 18px;
   height: 18px;
   float: left;
   margin-right: 8px;
   opacity: 0.7;
+}
+
+.just_cont-center {
+  justify-content: center;
+}
+
+.align_items-center {
+  align-items: center;
 }

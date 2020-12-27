@@ -56,15 +56,19 @@ export class DashboardMap {
     this.markers = [];
     this.constructMap(datalinked);
     this.data = new CData();
+    this.configurateControlButtons(datalinked);
   }
 
   async constructMap(datalinked) {
+    this.map.addEventListener("resize", () => {
+      console.log("e[qe");
+    });
     this.leafletMapContainer = createEl("div", "covid_map-container", this.map);
     await this.leafletMapContainer.setAttribute("id", "mapid");
     this.countries = await this.data.getAllCountries();
 
-    const mymap = createMap();
-    this.createLegend(mymap);
+    this.mymap = createMap();
+    this.createLegend(this.mymap);
 
     const geoJSON = await getGeoJSON();
 
@@ -105,14 +109,14 @@ export class DashboardMap {
         return rule1 || rule2 || rule3;
       })[0];
 
-      const polygon = L.polygon(country.geometry.coordinates, country.properties).addTo(mymap);
+      const polygon = L.polygon(country.geometry.coordinates, country.properties).addTo(this.mymap);
       const center = polygon.getBounds().getCenter();
       const marker = this.createMarker(countryObj, center, datalinked);
-      marker.addTo(mymap);
+      marker.addTo(this.mymap);
       this.markers.push(marker);
 
       polygon.on("mouseout", () => {
-        mymap.closePopup();
+        this.mymap.closePopup();
       });
 
       polygon.on("mouseover", () => {
@@ -120,7 +124,7 @@ export class DashboardMap {
         // console.log(center);
         L.popup().setLatLng(center)
           .setContent(`<p>${country.properties.name}<br/>${datalinked.getcontrolPanelDataText()}</p>`)
-          .openOn(mymap);
+          .openOn(this.mymap);
       });
     });
   }
@@ -196,6 +200,47 @@ export class DashboardMap {
       }
       return null;
     });
+  }
+
+  configurateControlButtons(dataLink) {
+    this.controlsButtonsContainer = createEl("div", "flex just_cont-center covid_table-control_panel-map", this.map);
+
+    this.controlPanelData = dataLink.getControlPanelDataClone();
+
+    this.lArrow = dataLink.getLArrow();
+    this.controlsButtonsContainer.appendChild(this.lArrow);
+
+    this.totalBtn = dataLink.getTotalBtn("control_button-map");
+    this.controlsButtonsContainer.appendChild(this.totalBtn);
+
+    this.controlsButtonsContainer.appendChild(this.controlPanelData);
+
+    this.todayBtn = dataLink.getTodayBtn("control_button-map");
+    this.controlsButtonsContainer.appendChild(this.todayBtn);
+
+    this.rArrow = dataLink.getRArrow();
+    this.controlsButtonsContainer.appendChild(this.rArrow);
+
+    this.hideButton = dataLink.getHideButton(this);
+    this.controlsButtonsContainer.appendChild(this.hideButton);
+  }
+
+  hide() {
+    this.map.classList.add("display-none");
+  }
+
+  show() {
+    this.map.classList.remove("display-none");
+  }
+
+  open() {
+    this.map.classList.add("covid_table-active");
+    this.mymap.invalidateSize();
+  }
+
+  close() {
+    this.map.classList.remove("covid_table-active");
+    this.mymap.invalidateSize();
   }
 }
 

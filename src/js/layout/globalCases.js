@@ -4,6 +4,7 @@ export class GlobalCases {
   constructor(parentNode, dataLink) {
     this.globalCases = createEl("div", "covid_global-cases", parentNode);
     this.construnctDiv(dataLink);
+    dataLink.setGlobalCasesDiv(this);
   }
 
   async construnctDiv(dataLink) {
