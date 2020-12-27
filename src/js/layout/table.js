@@ -4,6 +4,7 @@ export class DashboardTable {
   constructor(parentNode, dataLink) {
     this.table = createEl("div", "covid_table", parentNode);
     this.constructListOfButtons(dataLink);
+    dataLink.setTable(this);
   }
 
   async constructListOfButtons(dataLink) {
@@ -28,6 +29,17 @@ export class DashboardTable {
 
     this.rArrow = dataLink.getRArrow();
     this.controlPanelButtons.appendChild(this.rArrow);
+
+    this.hideButton = dataLink.getHideButton(this);
+    this.controlPanelButtons.appendChild(this.hideButton);
+  }
+
+  hide() {
+    this.table.classList.add("display-none");
+  }
+
+  show() {
+    this.table.classList.remove("display-none");
   }
 }
 

@@ -207,16 +207,27 @@ export class DashboardMap {
     this.lArrow = dataLink.getLArrow();
     this.controlsButtonsContainer.appendChild(this.lArrow);
 
-    this.totalBtn = dataLink.getTotalBtn();
+    this.totalBtn = dataLink.getTotalBtn("control_button-map");
     this.controlsButtonsContainer.appendChild(this.totalBtn);
 
     this.controlsButtonsContainer.appendChild(this.controlPanelData);
 
-    this.todayBtn = dataLink.getTodayBtn();
+    this.todayBtn = dataLink.getTodayBtn("control_button-map");
     this.controlsButtonsContainer.appendChild(this.todayBtn);
 
     this.rArrow = dataLink.getRArrow();
     this.controlsButtonsContainer.appendChild(this.rArrow);
+
+    this.hideButton = dataLink.getHideButton(this);
+    this.controlsButtonsContainer.appendChild(this.hideButton);
+  }
+
+  hide() {
+    this.map.classList.add("display-none");
+  }
+
+  show() {
+    this.map.classList.remove("display-none");
   }
 }
 

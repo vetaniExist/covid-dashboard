@@ -4,6 +4,7 @@ export class GlobalCases {
   constructor(parentNode, dataLink) {
     this.globalCases = createEl("div", "covid_global-cases", parentNode);
     this.construnctDiv(dataLink);
+    dataLink.setGlobalCasesDiv(this);
   }
 
   async construnctDiv(dataLink) {
@@ -19,6 +20,14 @@ export class GlobalCases {
 
   updateTotalCases(country) {
     this.textCases = country.getTotalCases();
+  }
+
+  hide() {
+    this.globalCases.classList.add("display-none");
+  }
+
+  show() {
+    this.globalCases.classList.remove("display-none");
   }
 }
 
