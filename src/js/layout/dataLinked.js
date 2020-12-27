@@ -134,17 +134,7 @@ export class DataLinked {
   }
 
   async configurateControlButtons() {
-    this.lArrow = configurateButton("", "lArrow");
-    this.controlPanelData = createEl("div", "text covid_table-control_panel-data");
-    this.totalBtn = configurateButton("total", "");
-    this.todayBtn = configurateButton("today", "");
-    this.rArrow = configurateButton("", "rArrow");
-
-    this.activateLeftArrowClick();
-    this.activateRightArrowClick();
-    this.activateTotalButton();
-    this.activateTodayButton();
-
+    this.controlPanelData = createEl("div", "flex text covid_table-control_panel-data");
     this.setcontrolPanelDataText(this.currenMode[0]);
   }
 
@@ -229,11 +219,15 @@ export class DataLinked {
   }
 
   getLArrow() {
-    return this.lArrow;
+    const leftArrow = configurateButton("", "lArrow");
+    this.activateLeftArrowClick(leftArrow);
+    return leftArrow;
   }
 
   getRArrow() {
-    return this.rArrow;
+    const rightArrow = configurateButton("", "rArrow");
+    this.activateRightArrowClick(rightArrow);
+    return rightArrow;
   }
 
   getControlPanelData() {
@@ -241,11 +235,15 @@ export class DataLinked {
   }
 
   getTotalBtn() {
-    return this.totalBtn;
+    const totalBtn = configurateButton("total", "");
+    this.activateTotalButton(totalBtn);
+    return totalBtn;
   }
 
   getTodayBtn() {
-    return this.todayBtn;
+    const todayBtn = configurateButton("today", "");
+    this.activateTodayButton(todayBtn);
+    return todayBtn;
   }
 
   setcontrolPanelDataText(newText) {
@@ -296,14 +294,14 @@ export class DataLinked {
     }
   }
 
-  activateLeftArrowClick() {
-    this.lArrow.addEventListener("click", () => {
+  activateLeftArrowClick(leftArrow) {
+    leftArrow.addEventListener("click", () => {
       this.activateArrow(0, this.currenMode.length - 1, -1);
     });
   }
 
-  activateRightArrowClick() {
-    this.rArrow.addEventListener("click", () => {
+  activateRightArrowClick(rightArrow) {
+    rightArrow.addEventListener("click", () => {
       this.activateArrow(this.currenMode.length - 1, 0, 1);
     });
   }
@@ -324,16 +322,16 @@ export class DataLinked {
     this.updateChart(this.currenMode[curModeIndex]);
   }
 
-  activateTotalButton() {
-    this.totalBtn.addEventListener("click", () => {
+  activateTotalButton(totalBtn) {
+    totalBtn.addEventListener("click", () => {
       if (this.currenMode !== this.dataTypesArrayTotal) {
         this.toogleTotalTodayButtons();
       }
     });
   }
 
-  activateTodayButton() {
-    this.todayBtn.addEventListener("click", () => {
+  activateTodayButton(todayBtn) {
+    todayBtn.addEventListener("click", () => {
       if (this.currenMode !== this.dataTypesArrayToday) {
         this.toogleTotalTodayButtons();
       }

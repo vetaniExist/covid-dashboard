@@ -75,7 +75,7 @@ body {
 
 .covid_country_list {
   position: relative;
-  height: 60vh;
+  height: 50vh;
   width: 20vw;
   background-color: violet;
   overflow-x: hidden;
@@ -113,6 +113,8 @@ footer {
   font-size: 22px;
 }
 
+.basic_button {}
+
 .country_button {
   width: 20vw;
   height: 60px;
@@ -126,14 +128,20 @@ footer {
 .covid_table-control_panel {
   width: inherit;
   background-color: red;
-  height: 5vh;
+  height: 10vh;
   justify-content: space-between;
+}
+
+.covid_table-control_panel-buttons {
+  width: inherit;
+  background-color: red;
+  height: 5vh;
 }
 
 .covid_table-control_panel-data {
   width: 15vw;
   background-color: purple;
-  height: inherit;
+  height: 5vh;
 }
 
 .lArrow {}
@@ -193,14 +201,12 @@ footer {
   color: wheat;
 }
 
-.covid_map-container{
+.covid_map-container {}
 
-}
 #mapid {
   height: 75vh;
   width: inherit;
 }
-
 
 /* legend */
 
@@ -208,10 +214,11 @@ footer {
   padding: 6px 8px;
   font: 14px/16px Arial, Helvetica, sans-serif;
   background: white;
-  background: rgba(255,255,255,0.8);
-  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
   border-radius: 5px;
 }
+
 .info h4 {
   margin: 0 0 5px;
   color: #777;
@@ -221,6 +228,7 @@ footer {
   line-height: 18px;
   color: #555;
 }
+
 .legend i {
   width: 18px;
   height: 18px;

@@ -7,25 +7,27 @@ export class DashboardTable {
   }
 
   async constructListOfButtons(dataLink) {
-    this.controlPanel = createEl("div", "flex covid_table-control_panel", this.table);
-
-    this.lArrow = dataLink.getLArrow();
-    this.controlPanel.appendChild(this.lArrow);
+    this.controlPanel = createEl("div", "flex flex_wrap covid_table-control_panel", this.table);
 
     this.controlPanelData = dataLink.getControlPanelData();
     this.controlPanel.appendChild(this.controlPanelData);
 
+    this.controlPanelButtons = createEl("div", "flex covid_table-control_panel-buttons", this.controlPanel);
+
+    this.lArrow = dataLink.getLArrow();
+    this.controlPanelButtons.appendChild(this.lArrow);
+
     this.totalBtn = dataLink.getTotalBtn();
-    this.controlPanel.appendChild(this.totalBtn);
+    this.controlPanelButtons.appendChild(this.totalBtn);
 
     this.todayBtn = dataLink.getTodayBtn();
-    this.controlPanel.appendChild(this.todayBtn);
-
-    this.rArrow = dataLink.getRArrow();
-    this.controlPanel.appendChild(this.rArrow);
+    this.controlPanelButtons.appendChild(this.todayBtn);
 
     this.tableDataButton = dataLink.getTableDataButton();
     this.table.appendChild(this.tableDataButton);
+
+    this.rArrow = dataLink.getRArrow();
+    this.controlPanelButtons.appendChild(this.rArrow);
   }
 }
 
