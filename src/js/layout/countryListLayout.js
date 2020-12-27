@@ -9,6 +9,7 @@ export class CountryList {
 
   async constructListOfButtons(dataLink) {
     this.inputField = createEl("input", "input_search-field", this.countryList);
+    this.inputField.placeholder = "Search";
     this.countryList.appendChild(dataLink.getDivListOfButtons());
     this.configurateControlButtons(dataLink);
     this.activateInputField(dataLink);

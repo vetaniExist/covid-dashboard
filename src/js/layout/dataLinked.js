@@ -356,7 +356,7 @@ export class DataLinked {
     this.filter = name;
     const filteredCountrieNames = this.listOfCountries.filter((el) => {
       const curSubString = el.name.substring(0, name.length);
-      return name === curSubString;
+      return name.toLowerCase() === curSubString.toLowerCase();
     });
 
     const filteredButtons = this.countryListButtons.filter((el) => filteredCountrieNames
