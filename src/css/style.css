@@ -113,6 +113,10 @@ footer {
   font-size: 22px;
 }
 
+.text-panel {
+  font-size: 16px;
+}
+
 .basic_button {}
 
 .country_button {
@@ -245,4 +249,8 @@ footer {
 
 .just_cont-center {
   justify-content: center;
+}
+
+.align_items-center {
+  align-items: center;
 }

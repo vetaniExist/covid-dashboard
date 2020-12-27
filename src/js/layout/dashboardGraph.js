@@ -85,6 +85,7 @@ export class DashboardGraph {
     };
 
     this.chart = new Chart(ctx, chartOptions);
+    this.configurateControlButtons(datalink);
   }
 
   async updateChart(cpd, currentCountryName, countryObj) {
@@ -98,6 +99,27 @@ export class DashboardGraph {
     this.chart.config.data.datasets[0].label = cpd.concat(`(${currentCountryName})`);
     this.chart.config.data.datasets[0].data = values;
     this.chart.update();
+  }
+
+  configurateControlButtons(dataLink) {
+    this.controlPanel = createEl("div", "flex flex_wrap covid_table-control_panel", this.graph);
+
+    this.controlPanelData = dataLink.getControlPanelDataClone();
+    this.controlPanel.appendChild(this.controlPanelData);
+
+    this.controlPanelButtons = createEl("div", "flex covid_table-control_panel-buttons", this.controlPanel);
+
+    this.lArrow = dataLink.getLArrow();
+    this.controlPanelButtons.appendChild(this.lArrow);
+
+    this.totalBtn = dataLink.getTotalBtn();
+    this.controlPanelButtons.appendChild(this.totalBtn);
+
+    this.todayBtn = dataLink.getTodayBtn();
+    this.controlPanelButtons.appendChild(this.todayBtn);
+
+    this.rArrow = dataLink.getRArrow();
+    this.controlPanelButtons.appendChild(this.rArrow);
   }
 }
 
