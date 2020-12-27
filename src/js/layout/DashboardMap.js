@@ -217,6 +217,17 @@ export class DashboardMap {
 
     this.rArrow = dataLink.getRArrow();
     this.controlsButtonsContainer.appendChild(this.rArrow);
+
+    this.hideButton = dataLink.getHideButton(this);
+    this.controlsButtonsContainer.appendChild(this.hideButton);
+  }
+
+  hide() {
+    this.map.classList.add("display-none");
+  }
+
+  show() {
+    this.map.classList.remove("display-none");
   }
 }
 

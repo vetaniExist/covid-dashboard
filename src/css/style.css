@@ -52,6 +52,7 @@ body {
   position: relative;
   width: 30vw;
   height: 45vh;
+  border: 1px solid red;
 }
 
 .covid_graph {
@@ -59,6 +60,10 @@ body {
   width: 30vw;
   height: 35vh;
   background-color: tan;
+}
+
+.chart_container{
+  max-width: 465px;
 }
 
 .covid_global-cases {
@@ -150,7 +155,7 @@ footer {
 }
 
 .covid_table-control_panel-data {
-  width: 23vw;
+  width: 16vw
   background-color: purple;
   height: 5vh;
 }

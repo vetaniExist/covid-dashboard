@@ -70,6 +70,7 @@ export class DataLinked {
     this.dataTypesArrayToday = ["todayCases", "todayDeaths", "todayRecovered",
       "todayCasesPer100", "todayDeathPer100", "todayRecoveredPer100"];
     this.currenMode = this.dataTypesArrayTotal;
+    this.isOpen = false;
   }
 
   async configurateData(data) {
@@ -77,7 +78,7 @@ export class DataLinked {
     const worldTotalCases = worldCountry.totalConfirmed;
 
     this.globalCasesTitle = createEl("p", "text");
-    this.TextCasesTextContent = createEl("p", "text", this.globalCases);
+    this.TextCasesTextContent = createEl("p", "text");
     this.setTextCases(worldTotalCases);
 
     this.listOfCountries = await data.getAllCountries();
@@ -369,8 +370,20 @@ export class DataLinked {
     });
   }
 
+  setGlobalCasesDiv(globalCasesObj) {
+    this.globalCases = globalCasesObj;
+  }
+
+  setCountryListDiv(listDiv) {
+    this.countryListDiv = listDiv;
+  }
+
   setMap(mapObj) {
     this.map = mapObj;
+  }
+
+  setTable(tableObj) {
+    this.table = tableObj;
   }
 
   updateMapMarkers(cpd) {
@@ -387,6 +400,39 @@ export class DataLinked {
     const name = this.getNameFromTable();
     const countryObj = this.getCountryByName(name);
     this.chart.updateChart(cpd, countryObj.name, countryObj);
+  }
+
+  getHideButton(partOfLayout) {
+    const hideButton = configurateButton("open", "");
+
+    hideButton.addEventListener("click", () => {
+      this.hide(partOfLayout);
+      if (!this.isOpen) {
+        hideButton.innerText = "Open";
+      } else {
+        hideButton.innerText = "Close";
+      }
+    });
+
+    return hideButton;
+  }
+
+  hide(obj) {
+    this.isOpen = !this.isOpen;
+    this.tryHideBlock(obj, this.map);
+    this.tryHideBlock(obj, this.table);
+    this.tryHideBlock(obj, this.countryListDiv);
+    this.tryHideBlock(obj, this.chart);
+  }
+
+  tryHideBlock(obj, blockObj) {
+    if (obj !== blockObj) {
+      if (!this.isOpen) {
+        blockObj.show();
+      } else {
+        blockObj.hide();
+      }
+    }
   }
 }
 

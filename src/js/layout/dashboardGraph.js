@@ -67,7 +67,7 @@ export class DashboardGraph {
     const dates = Object.keys(data);
     const values = Object.values(data);
 
-    const canvas = createEl("canvas", "", this.graph);
+    const canvas = createEl("canvas", "chart_container", this.graph);
     const ctx = canvas.getContext("2d");
 
     const chartOptions = {
@@ -120,6 +120,17 @@ export class DashboardGraph {
 
     this.rArrow = dataLink.getRArrow();
     this.controlPanelButtons.appendChild(this.rArrow);
+
+    this.hideButton = dataLink.getHideButton(this);
+    this.controlPanelButtons.appendChild(this.hideButton);
+  }
+
+  hide() {
+    this.graph.classList.add("display-none");
+  }
+
+  show() {
+    this.graph.classList.remove("display-none");
   }
 }
 

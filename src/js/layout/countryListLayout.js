@@ -12,6 +12,7 @@ export class CountryList {
     this.countryList.appendChild(dataLink.getDivListOfButtons());
     this.configurateControlButtons(dataLink);
     this.activateInputField(dataLink);
+    dataLink.setCountryListDiv(this);
   }
 
   configurateControlButtons(dataLink) {
@@ -33,6 +34,9 @@ export class CountryList {
 
     this.rArrow = dataLink.getRArrow();
     this.controlPanelButtons.appendChild(this.rArrow);
+    
+    this.hideButton = dataLink.getHideButton(this);
+    this.controlPanelButtons.appendChild(this.hideButton);
   }
 
   activateInputField(dataLink) {
@@ -47,6 +51,14 @@ export class CountryList {
         dataLink.filterButtonsUsingCountryName(this.filter);
       }
     });
+  }
+
+  hide() {
+    this.parent.classList.add("display-none");
+  }
+
+  show() {
+    this.parent.classList.remove("display-none");
   }
 }
 
