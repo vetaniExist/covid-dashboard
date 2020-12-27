@@ -220,13 +220,13 @@ export class DataLinked {
   }
 
   getLArrow() {
-    const leftArrow = configurateButton("", "lArrow");
+    const leftArrow = configurateButton("", "lArrow control_button");
     this.activateLeftArrowClick(leftArrow);
     return leftArrow;
   }
 
   getRArrow() {
-    const rightArrow = configurateButton("", "rArrow");
+    const rightArrow = configurateButton("", "rArrow control_button");
     this.activateRightArrowClick(rightArrow);
     return rightArrow;
   }
@@ -241,14 +241,14 @@ export class DataLinked {
     return clone;
   }
 
-  getTotalBtn() {
-    const totalBtn = configurateButton("total", "");
+  getTotalBtn(additionalClasses) {
+    const totalBtn = configurateButton("total", "control_button ".concat(additionalClasses));
     this.activateTotalButton(totalBtn);
     return totalBtn;
   }
 
-  getTodayBtn() {
-    const todayBtn = configurateButton("today", "");
+  getTodayBtn(additionalClasses) {
+    const todayBtn = configurateButton("today", "control_button ".concat(additionalClasses));
     this.activateTodayButton(todayBtn);
     return todayBtn;
   }

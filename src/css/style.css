@@ -7,7 +7,7 @@ body {
   position: relative;
   width: 100vw;
   height: 90vh;
-  background-color: red;
+  background-color: rgba(36, 39, 60, 0.7);
 }
 
 .flex {
@@ -22,14 +22,12 @@ body {
   position: relative;
   height: 80vh;
   width: 100vw;
-  background-color: yellow;
 }
 
 .country_cases-box {
   position: relative;
   height: 80vh;
   width: 20vw;
-  background-color: yellowgreen;
 }
 
 .covid_map {
@@ -42,21 +40,18 @@ body {
   position: relative;
   height: 80vh;
   width: 30vw;
-  background-color: firebrick;
 }
 
 .covid_header {
   position: relative;
   height: 10vh;
   width: 100vw;
-  background-color: purple;
 }
 
 .covid_table {
   position: relative;
   width: 30vw;
   height: 45vh;
-  background-color: green;
 }
 
 .covid_graph {
@@ -90,7 +85,7 @@ footer {
   position: relative;
   height: 10vh;
   width: 100vw;
-  background-color: forestgreen;
+  background-color: rgba(36, 39, 60, 0.7);
   justify-content: space-evenly;
   align-items: center;
 }
@@ -119,12 +114,18 @@ footer {
 
 .basic_button {}
 
+.control_button {
+  max-width: 6vw;
+}
+
+.control_button-map{
+  max-width: 10vw;
+}
 .country_button {
   width: 20vw;
   height: 60px;
   font-size: 14px;
   font-family: 'Quicksand', sans-serif;
-  background: rgba(0, 0, 0, 0);
   color: black;
   border: 2px solid black;
 }
@@ -149,7 +150,7 @@ footer {
 }
 
 .covid_table-control_panel-data {
-  width: 15vw;
+  width: 23vw;
   background-color: purple;
   height: 5vh;
 }
