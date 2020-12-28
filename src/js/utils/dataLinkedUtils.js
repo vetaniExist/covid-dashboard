@@ -65,4 +65,29 @@ export function decorCountryAddLinkToButton(el, button, textDiv) {
   countryObj.linkCountryButtonTextDiv = textDiv;
 }
 
+export function itIsPercentFilter(data, cpd, country) {
+  const inIsPercent = shouldGetInfoInPercentes(cpd);
+  if (inIsPercent) {
+    if (Array.isArray(data)) {
+      return data.map((el) => (el / country.population) * 100000);
+    }
+    return (data / country.population) * 100000;
+  }
+  return data;
+}
+
+export function itIsTodayFilter(date, cpd) {
+  const dateCopy = date.slice(0);
+  if (itIsTodayData(getDataSortFunc(cpd)[1])) {
+    const newDate = date.map((el, idx) => {
+      if (idx !== 0) {
+        return el - dateCopy[idx - 1];
+      }
+      return el;
+    });
+    return newDate;
+  }
+  return dateCopy;
+}
+
 export default getDataSortFunc;

@@ -3,7 +3,7 @@ import Chart from "chart.js";
 import { createElement as createEl } from "../utils/elementsUtils";
 
 import { getTimelineForCountry } from "../utils/covidAPIUtils";
-import { getDataSortFunc, shouldGetInfoInPercentes, itIsTodayData } from "../utils/dataLinkedUtils";
+import { getDataSortFunc, itIsPercentFilter, itIsTodayFilter } from "../utils/dataLinkedUtils";
 
 async function getTimeline(currentCountryName) {
   let timeline;
@@ -27,28 +27,6 @@ function getTimelineParam(cpd) {
     return "recovered";
   }
   return null;
-}
-
-function itIsPercentFilter(data, cpd, country) {
-  const inIsPercent = shouldGetInfoInPercentes(cpd);
-  if (inIsPercent) {
-    return data.map((el) => (el / country.population) * 100000);
-  }
-  return data;
-}
-
-function itIsTodayFilter(date, cpd) {
-  const dateCopy = date.slice(0);
-  if (itIsTodayData(getDataSortFunc(cpd)[1])) {
-    const newDate = date.map((el, idx) => {
-      if (idx !== 0) {
-        return el - dateCopy[idx - 1];
-      }
-      return el;
-    });
-    return newDate;
-  }
-  return dateCopy;
 }
 
 export class DashboardGraph {
@@ -89,9 +67,12 @@ export class DashboardGraph {
   }
 
   async updateChart(cpd, currentCountryName, countryObj) {
+    console.log("update chart");
     const timeline = await getTimeline(currentCountryName);
     const param = getTimelineParam(cpd);
+    console.log(param);
     const data = timeline[param];
+    console.log(data);
 
     let values = itIsTodayFilter(Object.values(data), cpd);
     values = itIsPercentFilter(values, cpd, countryObj);

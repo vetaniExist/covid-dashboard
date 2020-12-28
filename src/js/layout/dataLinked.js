@@ -106,6 +106,16 @@ export class DataLinked {
     return null;
   }
 
+  getCountryByISO2(iso2) {
+    for (let i = 0; i < this.listOfCountries.length; i += 1) {
+      const curCountry = this.listOfCountries[i];
+      if (curCountry.iso2 === iso2) {
+        return curCountry;
+      }
+    }
+    return null;
+  }
+
   updateTableDataButton(el = null, mode) {
     if (!el) {
       const curCountry = this.getCountryByName(this.getNameFromTable());

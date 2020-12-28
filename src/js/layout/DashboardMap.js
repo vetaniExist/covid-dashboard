@@ -2,7 +2,9 @@ import L from "../../../node_modules/leaflet/dist/leaflet";
 import "../../../node_modules/leaflet/dist/leaflet.css";
 
 import { createElement as createEl } from "../utils/elementsUtils";
-import { getDataSortFunc, shouldGetInfoInPercentes } from "../utils/dataLinkedUtils";
+import {
+  getDataSortFunc, shouldGetInfoInPercentes, itIsPercentFilter,
+} from "../utils/dataLinkedUtils";
 
 import { CovidData as CData } from "../entries/covidData";
 import { getGeoJSON } from "../utils/mapAPIUtils";
@@ -60,9 +62,6 @@ export class DashboardMap {
   }
 
   async constructMap(datalinked) {
-    this.map.addEventListener("resize", () => {
-      console.log("e[qe");
-    });
     this.leafletMapContainer = createEl("div", "covid_map-container", this.map);
     await this.leafletMapContainer.setAttribute("id", "mapid");
     this.countries = await this.data.getAllCountries();
@@ -74,23 +73,21 @@ export class DashboardMap {
 
     geoJSON.features.forEach((country) => {
       if (country.geometry.type === "Polygon") {
+        /* eslint-disable no-param-reassign */
         country.geometry.coordinates.forEach((polygon) => {
-          /* eslint-disable no-param-reassign */
           polygon.forEach((el, index) => {
             polygon[index] = [el[1], el[0]];
           });
-          /* eslint-enable no-param-reassign */
         });
       } else if (country.geometry.type === "MultiPolygon") {
         country.geometry.coordinates.forEach((polygons) => {
-          /* eslint-disable no-param-reassign */
           polygons.forEach((polygon) => {
             polygon.forEach((el, index) => {
               polygon[index] = [el[1], el[0]];
             });
           });
-          /* eslint-enable no-param-reassign */
         });
+        /* eslint-enable no-param-reassign */
       }
       // name = 144
       // sovereignt= 153;
@@ -102,12 +99,11 @@ export class DashboardMap {
       // geounit 147
       // formal_en 23
       //  sovereignt  + name_long + formal_en == 163/177
-      const countryObj = this.countries.filter((el) => {
-        const rule1 = el.name === country.properties.sovereignt;
-        const rule2 = el.name === country.properties.name_long;
-        const rule3 = false || (country.properties.formal_en && country.properties.formal_en.indexOf(el.name) > -1);
-        return rule1 || rule2 || rule3;
-      })[0];
+
+      let countryObj = datalinked.getCountryByISO2(country.properties.wb_a2);
+      if (countryObj === null) {
+        countryObj = this.findCountryUsingApiData(country);
+      }
 
       const polygon = L.polygon(country.geometry.coordinates, country.properties).addTo(this.mymap);
       const center = polygon.getBounds().getCenter();
@@ -120,13 +116,25 @@ export class DashboardMap {
       });
 
       polygon.on("mouseover", () => {
-        // console.log(e.latlng)
-        // console.log(center);
+        const countryName = countryObj ? countryObj.name : "undefindid";
+        const cpd = datalinked.getcontrolPanelDataText();
+        const param = getDataSortFunc(cpd)[1];
+        const data = countryObj ? itIsPercentFilter(countryObj[param], cpd, countryObj) : "undefined";
+
         L.popup().setLatLng(center)
-          .setContent(`<p>${country.properties.name}<br/>${datalinked.getcontrolPanelDataText()}</p>`)
+          .setContent(`<p>${countryName}<br/>${cpd}: ${data}</p>`)
           .openOn(this.mymap);
       });
     });
+  }
+
+  findCountryUsingApiData(country) {
+    return this.countries.filter((el) => {
+      const rule1 = el.name === country.properties.sovereignt;
+      const rule2 = el.name === country.properties.name_long;
+      const rule3 = false || (country.properties.formal_en && country.properties.formal_en.indexOf(el.name) > -1);
+      return rule1 || rule2 || rule3;
+    })[0];
   }
 
   createLegend(map) {
