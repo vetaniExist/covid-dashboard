@@ -22,4 +22,14 @@ export function configurateButton(newInnnerText, classes = "", parent = null) {
   return newButton;
 }
 
+export function setElementOrder(countryButton, newOrder) {
+  const button = countryButton;
+  button.style.order = newOrder;
+}
+
+export function setElementInnerText(element, newText) {
+  const el = element;
+  el.innerText = newText;
+}
+
 export default createElement;

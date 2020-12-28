@@ -1,4 +1,4 @@
-import { createElement as createEl, configurateButton } from "../utils/elementsUtils";
+import { createElement as createEl, configurateButton, setElementOrder, setElementInnerText } from "../utils/elementsUtils";
 
 export function getDataSortFunc(currentControlPanelDataText, elA, elB) {
   switch (currentControlPanelDataText) {
@@ -61,6 +61,11 @@ export function itIsTodayData(mode) {
   return mode.indexOf("today") > -1;
 }
 
+function decorCountryAddLinkToButton(el, button) {
+  const countryObj = el;
+  countryObj.linkToCountryButton = button;
+}
+
 export class DataLinked {
   constructor() {
     this.countryListButtons = [];
@@ -94,8 +99,8 @@ export class DataLinked {
       return sortConfig[0];
     });
 
-    this.divListOfCountries = createEl("div", "countries_button_container");
-    this.listOfCountries.forEach((el) => {
+    this.divListOfCountries = createEl("div", "flex flex_wrap countries_button_container");
+    this.listOfCountries.forEach((el, index) => {
       const countryButton = configurateButton(el.name.concat(" ")
         .concat(sortConfig[1])
         .concat(" ")
@@ -110,6 +115,11 @@ export class DataLinked {
       }
 
       this.countryListButtons.push(countryButton);
+      setElementOrder(countryButton, index);
+      /* countryButton.style.order = index; */
+      // console.log(el);
+      decorCountryAddLinkToButton(el, countryButton);
+      // console.log(el.linkToCountryButton);
       this.divListOfCountries.appendChild(countryButton);
 
       countryButton.addEventListener("click", () => {
@@ -274,19 +284,14 @@ export class DataLinked {
       sortConfig = getDataSortFunc(mode, elA, elB);
       return sortConfig[0];
     });
-    this.divListOfCountries.innerText = "";
-    this.countryListButtons = [];
-    this.listOfCountries.forEach((el) => {
-      const countryButton = configurateButton(el.name.concat(" ")
+    this.listOfCountries.forEach((el, index) => {
+      setElementOrder(el.linkToCountryButton, index);
+      const newText = el.name.concat(" ")
         .concat(sortConfig[1])
         .concat(" ")
-        .concat(el[sortConfig[2]]), "country_button", this.divListOfCountries);
+        .concat(el[sortConfig[2]]);
 
-      this.countryListButtons.push(countryButton);
-      countryButton.addEventListener("click", () => {
-        this.countryButtonClick(el, sortConfig, mode);
-        this.updateChart(mode);
-      });
+      setElementInnerText(el.linkToCountryButton, newText);
     });
   }
 
