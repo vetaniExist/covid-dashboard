@@ -1,4 +1,6 @@
-import { createElement as createEl, configurateButton, setElementOrder, setElementInnerText } from "../utils/elementsUtils";
+import {
+  createElement as createEl, configurateButton, setElementOrder, setElementInnerText,
+} from "../utils/elementsUtils";
 
 export function getDataSortFunc(currentControlPanelDataText, elA, elB) {
   switch (currentControlPanelDataText) {
@@ -61,9 +63,10 @@ export function itIsTodayData(mode) {
   return mode.indexOf("today") > -1;
 }
 
-function decorCountryAddLinkToButton(el, button) {
+function decorCountryAddLinkToButton(el, button, textDiv) {
   const countryObj = el;
   countryObj.linkToCountryButton = button;
+  countryObj.linkCountryButtonTextDiv = textDiv;
 }
 
 export class DataLinked {
@@ -101,10 +104,12 @@ export class DataLinked {
 
     this.divListOfCountries = createEl("div", "flex flex_wrap countries_button_container");
     this.listOfCountries.forEach((el, index) => {
-      const countryButton = configurateButton(el.name.concat(" ")
+      const countryButton = configurateButton("", "country_button");
+      const pTag = createEl("div", "", countryButton);
+      setElementInnerText(pTag, el.name.concat(" ")
         .concat(sortConfig[1])
         .concat(" ")
-        .concat(el[sortConfig[2]]), "country_button");
+        .concat(el[sortConfig[2]]));
 
       if (el.name !== "World" && el.flag) {
         const flag = new Image();
@@ -116,10 +121,7 @@ export class DataLinked {
 
       this.countryListButtons.push(countryButton);
       setElementOrder(countryButton, index);
-      /* countryButton.style.order = index; */
-      // console.log(el);
-      decorCountryAddLinkToButton(el, countryButton);
-      // console.log(el.linkToCountryButton);
+      decorCountryAddLinkToButton(el, countryButton, pTag);
       this.divListOfCountries.appendChild(countryButton);
 
       countryButton.addEventListener("click", () => {
@@ -286,12 +288,16 @@ export class DataLinked {
     });
     this.listOfCountries.forEach((el, index) => {
       setElementOrder(el.linkToCountryButton, index);
+      let newData = shouldGetInfoInPercentes(mode) ? (el[sortConfig[2]] / el.population) * 100000 : el[sortConfig[2]];
+      if (Number.isNaN(newData)) {
+        newData = "not find";
+      }
       const newText = el.name.concat(" ")
         .concat(sortConfig[1])
         .concat(" ")
-        .concat(el[sortConfig[2]]);
+        .concat(newData);
 
-      setElementInnerText(el.linkToCountryButton, newText);
+      setElementInnerText(el.linkCountryButtonTextDiv, newText);
     });
   }
 
