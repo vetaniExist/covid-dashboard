@@ -71,7 +71,6 @@ function decorCountryAddLinkToButton(el, button, textDiv) {
 
 export class DataLinked {
   constructor() {
-    this.countryListButtons = [];
     this.dataTypesArrayTotal = ["totalCases", "totalDeaths", "totalRecovered",
       "totalCasesPer100", "totalDeathPer100", "totalRecoveredPer100"];
 
@@ -119,7 +118,6 @@ export class DataLinked {
         countryButton.appendChild(flag);
       }
 
-      this.countryListButtons.push(countryButton);
       setElementOrder(countryButton, index);
       decorCountryAddLinkToButton(el, countryButton, pTag);
       this.divListOfCountries.appendChild(countryButton);
@@ -370,14 +368,14 @@ export class DataLinked {
       return name.toLowerCase() === curSubString.toLowerCase();
     });
 
-    const filteredButtons = this.countryListButtons.filter((el) => filteredCountrieNames
-      .filter((el2) => el.textContent.indexOf(el2.name) > -1).length > 0);
+    const filteredButtons = filteredCountrieNames.map((el) => el.linkToCountryButton);
 
-    this.countryListButtons.forEach((el) => {
-      if (!filteredButtons.includes(el)) {
-        el.classList.add("display-none");
+    this.listOfCountries.forEach((el) => {
+      const button = el.linkToCountryButton;
+      if (!filteredButtons.includes(button)) {
+        button.classList.add("display-none");
       } else {
-        el.classList.remove("display-none");
+        button.classList.remove("display-none");
       }
     });
   }
@@ -454,14 +452,18 @@ export class DataLinked {
     }
   }
 
+  getCountryListButtons() {
+    return this.listOfCountries.map((el) => el.linkToCountryButton);
+  }
+
   allButtonsActive() {
-    this.countryListButtons.forEach((el) => {
+    this.getCountryListButtons().forEach((el) => {
       el.classList.add("country_button-active");
     });
   }
 
   allButtonsRemoveActive() {
-    this.countryListButtons.forEach((el) => {
+    this.getCountryListButtons().forEach((el) => {
       el.classList.remove("country_button-active");
     });
   }
