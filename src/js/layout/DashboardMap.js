@@ -125,6 +125,12 @@ export class DashboardMap {
           .setContent(`<p>${countryName}<br/>${cpd}: ${data}</p>`)
           .openOn(this.mymap);
       });
+
+      polygon.on("click", () => {
+        if (countryObj) {
+          countryObj.linkToCountryButton.click();
+        }
+      });
     });
   }
 
