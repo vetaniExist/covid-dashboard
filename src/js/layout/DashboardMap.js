@@ -224,9 +224,6 @@ export class DashboardMap {
     this.lArrow = dataLink.getLArrow();
     this.controlsButtonsContainer.appendChild(this.lArrow);
 
-    this.totalBtn = dataLink.getTotalBtn("control_button-map");
-    this.controlsButtonsContainer.appendChild(this.totalBtn);
-
     this.controlsButtonsContainer.appendChild(this.controlPanelData);
 
     this.todayBtn = dataLink.getTodayBtn("control_button-map");

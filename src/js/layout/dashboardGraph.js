@@ -93,9 +93,6 @@ export class DashboardGraph {
     this.lArrow = dataLink.getLArrow();
     this.controlPanelButtons.appendChild(this.lArrow);
 
-    this.totalBtn = dataLink.getTotalBtn();
-    this.controlPanelButtons.appendChild(this.totalBtn);
-
     this.todayBtn = dataLink.getTodayBtn();
     this.controlPanelButtons.appendChild(this.todayBtn);
 

@@ -83,6 +83,7 @@ export class DataLinked {
 
   async configurateControlButtons() {
     this.controlPanelDataClones = [];
+    this.totalTodayButtons = [];
     this.controlPanelData = createEl("div",
       "flex just_cont-center align_items-center text text-panel covid_table-control_panel-data");
     this.setcontrolPanelDataText(this.currenMode[0]);
@@ -142,11 +143,11 @@ export class DataLinked {
       tableData.death = (tableData.recovered / el.population) * 100000;
     }
 
-    this.tableDataButton.textContent = el.name.concat(" cases: ")
+    this.tableDataButton.innerHTML = el.name.concat(" cases: ")
       .concat(tableData.confirmed)
-      .concat("\n\nrecovered ")
+      .concat("</br>recovered ")
       .concat(tableData.recovered)
-      .concat("\ndeath ")
+      .concat("</br>death ")
       .concat(tableData.death);
 
     return null;
@@ -200,16 +201,11 @@ export class DataLinked {
     return clone;
   }
 
-  getTotalBtn(additionalClasses) {
-    const totalBtn = configurateButton("total", "control_button ".concat(additionalClasses));
-    this.activateTotalButton(totalBtn);
-    return totalBtn;
-  }
-
   getTodayBtn(additionalClasses) {
-    const todayBtn = configurateButton("today", "control_button ".concat(additionalClasses));
-    this.activateTodayButton(todayBtn);
-    return todayBtn;
+    const todayTotalSwitchBtn = configurateButton("Today", "control_button ".concat(additionalClasses));
+    this.totalTodayButtons.push(todayTotalSwitchBtn);
+    this.activateTodayButton(todayTotalSwitchBtn);
+    return todayTotalSwitchBtn;
   }
 
   setcontrolPanelDataText(newText) {
@@ -292,19 +288,18 @@ export class DataLinked {
     this.updateChart(this.currenMode[curModeIndex]);
   }
 
-  activateTotalButton(totalBtn) {
-    totalBtn.addEventListener("click", () => {
-      if (this.currenMode !== this.dataTypesArrayTotal) {
-        this.toogleTotalTodayButtons();
-      }
-    });
-  }
-
   activateTodayButton(todayBtn) {
     todayBtn.addEventListener("click", () => {
       if (this.currenMode !== this.dataTypesArrayToday) {
-        this.toogleTotalTodayButtons();
+        this.totalTodayButtons.forEach((el) => {
+          setElementInnerText(el, "Total");
+        });
+      } else {
+        this.totalTodayButtons.forEach((el) => {
+          setElementInnerText(el, "Today");
+        });
       }
+      this.toogleTotalTodayButtons();
     });
   }
 
