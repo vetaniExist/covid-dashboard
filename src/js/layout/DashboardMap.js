@@ -2,10 +2,10 @@ import L from "../../../node_modules/leaflet/dist/leaflet";
 import "../../../node_modules/leaflet/dist/leaflet.css";
 
 import { createElement as createEl } from "../utils/elementsUtils";
+import { getDataSortFunc, shouldGetInfoInPercentes } from "../utils/dataLinkedUtils";
 
 import { CovidData as CData } from "../entries/covidData";
 import { getGeoJSON } from "../utils/mapAPIUtils";
-import { getDataSortFunc, shouldGetInfoInPercentes } from "./dataLinked";
 
 /* eslint-disable no-param-reassign */
 function updateMarker(marker, value, isPercent) {

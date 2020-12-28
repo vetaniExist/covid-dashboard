@@ -3,7 +3,7 @@ import Chart from "chart.js";
 import { createElement as createEl } from "../utils/elementsUtils";
 
 import { getTimelineForCountry } from "../utils/covidAPIUtils";
-import { getDataSortFunc, shouldGetInfoInPercentes, itIsTodayData } from "./dataLinked";
+import { getDataSortFunc, shouldGetInfoInPercentes, itIsTodayData } from "../utils/dataLinkedUtils";
 
 async function getTimeline(currentCountryName) {
   let timeline;
