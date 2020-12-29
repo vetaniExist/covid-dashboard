@@ -37,30 +37,24 @@ export class CovidData {
 
   async getAllCountries() {
     if (this.countries) {
-      console.log("Возвращаем getAllCountries");
       return this.countries;
     }
-    console.log("Ждем выполнение getAllCountries");
     await this.parseData();
     return this.countries;
   }
 
   async getCountryWorld() {
     if (this.worldCountry) {
-      console.log("Возвращаем worldCountry");
       return this.worldCountry;
     }
-    console.log("Ждем выполнение getCountryWorld");
     await this.parseData();
     return this.worldCountry;
   }
 
   async getWorldTotalCases() {
     if (this.worldData) {
-      console.log("Возвращаем");
       return this.worldData.TotalConfirmed;
     }
-    console.log("Ждем выполнение getWorldTotalCases");
     await this.parseData();
     return this.worldData.TotalConfirmed;
   }

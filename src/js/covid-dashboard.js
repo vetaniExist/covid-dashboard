@@ -3,13 +3,9 @@ import { CovidDashboardLayout as Layout } from "./layout/covidDashboardLayout";
 class CovidDashboard {
   constructor() {
     this.layout = new Layout();
-    this.scratch = "scratchForWebpach";
-  }
-
-  tmpScratchWebpach() {
-    console.log(this.scratch);
   }
 }
 
+/* eslint-disable no-unused-vars */
 const dashboard = new CovidDashboard();
-dashboard.tmpScratchWebpach();
+/* eslint-enable no-unused-vars */

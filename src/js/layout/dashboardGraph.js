@@ -67,12 +67,9 @@ export class DashboardGraph {
   }
 
   async updateChart(cpd, currentCountryName, countryObj) {
-    console.log("update chart");
     const timeline = await getTimeline(currentCountryName);
     const param = getTimelineParam(cpd);
-    console.log(param);
     const data = timeline[param];
-    console.log(data);
 
     let values = itIsTodayFilter(Object.values(data), cpd);
     values = itIsPercentFilter(values, cpd, countryObj);

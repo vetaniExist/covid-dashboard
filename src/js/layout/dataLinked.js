@@ -384,13 +384,10 @@ export class DataLinked {
       } else {
         blockObj.show();
       }
+    } else if (!this.isOpen) {
+      blockObj.open(this.allButtonsActive.bind(this));
     } else {
-      console.log("тут");
-      if (!this.isOpen) {
-        blockObj.open(this.allButtonsActive.bind(this));
-      } else {
-        blockObj.close(this.allButtonsRemoveActive.bind(this));
-      }
+      blockObj.close(this.allButtonsRemoveActive.bind(this));
     }
   }
 
